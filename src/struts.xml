@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<!-- START SNIPPET: xworkSample -->
+<struts>
+	
+    <package name="default"  extends="struts-default">
+	    <action name="print" class="action.PrintAction" method="printcode">
+	    	<result name="SUCCESS">/index.jsp</result>
+	    </action>
+    </package>
+
+
+</struts>
+
+<!-- END SNIPPET: xworkSample -->
