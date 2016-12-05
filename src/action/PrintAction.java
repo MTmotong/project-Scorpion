@@ -14,6 +14,6 @@ public class PrintAction {
 	public String printcode()
 	{
 		System.out.println(code);
-		return "SUCCESS";
+		return "printsuccess";
 	}
 }

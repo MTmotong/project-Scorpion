@@ -8,6 +8,10 @@
 <struts>
 	
     <package name="default"  extends="struts-default">
+    
+	    <action name="print" class="action.PrintAction" method="printcode">
+	    	<result name="printsuccess">/test.jsp</result>
+	    </action>
 	    
     </package>
 

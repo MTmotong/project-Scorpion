@@ -18,15 +18,18 @@
 <body>
 	
 	
-	
-		<textarea id="editor"></textarea>
-		<script>
-	var myTextarea = document.getElementById('editor');
-	var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
-	    mode: "text/x-c++src",
-	    lineNumbers: true,
-	    theme:"seti"
-	});
+	<s:form action="print" method="post">
+		<s:textarea theme="simple" id="code" name="code"></s:textarea>
+		<s:submit value="print"></s:submit>
+	</s:form>
+		
+	<script>
+		var myTextarea = document.getElementById('code');
+		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
+		    mode: "text/x-c++src",
+		    lineNumbers: true,
+		    theme:"seti"
+		});
 	</script>
 	
 	
