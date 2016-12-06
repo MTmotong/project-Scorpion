@@ -107,10 +107,11 @@
 								</textarea> -->
 	                 	 	</div>
 	                  		<div class="col-sm-6" id="RightPane">
-			            		<label><strong style="font-size: 16px;color:#617f10;"> 运行结果：</strong></label>
+			            		<label><strong style="font-size: 16px;color:#617f10;"> 输入：</strong></label>
 	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
-	                  			<textarea class="form-control" style="height:451px;">
-	                  			</textarea>
+	                  			<textarea class="form-control" style="height:114px;"></textarea>
+	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
+	                  			<textarea class="form-control" style="height:310px;"></textarea>
 	                	  	</div>
 	                	</div>   
 	   				</form>
