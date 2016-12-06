@@ -6,14 +6,19 @@
 
 <!-- START SNIPPET: xworkSample -->
 <struts>
-	
-    <package name="default"  extends="struts-default">
-    
-	    <action name="print" class="action.PrintAction" method="printcode">
-	    	<result name="printsuccess">/test.jsp</result>
-	    </action>
-	    
-    </package>
+	<constant name="struts.devMode" value="true" />
+	<package name="default" extends="struts-default">
+
+		<action name="print" class="action.PrintAction" method="printcode">
+			<result name="printsuccess">/test.jsp</result>
+			<result name="fail">/test.jsp</result>
+		</action>
+
+		<action name="testRunTime" class="action.TestRunTime">
+			<result name="success">testRunTime.jsp</result>
+		</action>
+
+	</package>
 
 
 </struts>
