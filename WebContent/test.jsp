@@ -109,7 +109,7 @@
 	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
 	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
 	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
-	                  			<textarea class="form-control" style="height:310px;"></textarea>
+	                  			<s:textarea name="result" class="form-control" style="height:310px;"></s:textarea>
 	                	  	</div>
 	                	</div>   
 	   				</s:form>

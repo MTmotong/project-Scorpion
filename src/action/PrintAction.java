@@ -8,7 +8,7 @@ public class PrintAction {
 	Code cold;
 	private String code;
 	private String input;
-
+	private String result;
 	public String getInput() {
 		return input;
 	}
@@ -61,8 +61,16 @@ public class PrintAction {
 			System.err.println("run time error");
 			return "fail";
 		}
-
+		setResult(cold.getOutput());
 		return "runCodeSuccess";
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 }
