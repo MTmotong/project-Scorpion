@@ -175,6 +175,7 @@
 	  });
 	</script>
  	
+<<<<<<< HEAD
  	
  	<script>
 		function changeFontSize(size){
@@ -182,6 +183,5 @@
 			
 		} 
 	 </script>
-
 </body>
 </html>
