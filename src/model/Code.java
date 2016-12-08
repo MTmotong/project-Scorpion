@@ -87,6 +87,9 @@ public class Code {
 
 		FileInter fi = new FileInter();
 
+		System.out.println("input = " + input);
+		
+		
 		fi.writeFile(content, "d:\\tmpcode\\tmp.cpp");
 		fi.writeFile(input, "d:\\tmpcode\\tmp.in");
 
