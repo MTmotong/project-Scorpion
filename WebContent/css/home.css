@@ -1,0 +1,42 @@
+.navbar .container{
+			position: relative;
+		}
+.btn-group {
+  	position: absolute;
+  	right: 0;
+  	top: 0;
+}
+@media (max-width: 767px){
+  	.btn-group{
+    	right: 80px;
+  }
+}
+
+ #textareaCode {
+    height: 450px;
+ }
+ #iframeResult {
+    border: 0!important;
+    min-width: 100px;
+    width: 100%;
+    height: 450px;
+    background-color: #fff;
+  }
+  @media screen and (max-width: 768px) {
+      #textareaCode {
+    	  height: 300px;
+      }
+      .CodeMirror {
+      	  font-size:12px;
+          height:300px;
+      }
+      #iframeResult {
+          height: 300px;
+      }
+      .form-inline {
+          padding: 6px 0 2px 0;
+      }
+  }
+  .ad {
+      text-align: center;
+  }
