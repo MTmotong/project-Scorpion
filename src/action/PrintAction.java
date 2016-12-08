@@ -10,6 +10,14 @@ public class PrintAction {
 	Code cold;
 	private String code;
 
+	public Code getCold() {
+		return cold;
+	}
+
+	public void setCold(Code cold) {
+		this.cold = cold;
+	}
+
 	public String getCode() {
 		return code;
 	}
@@ -17,60 +25,34 @@ public class PrintAction {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
-	public String printcode() throws IOException
-	{
+
+	public String printcode() throws IOException, InterruptedException {
 		System.out.println(code);
-/*		if(!saveToFile(code)) {
-			System.err.println("save to file failed!!");
-			return "fail";
-		}
-		
-		if (!compileFile()) {
-			System.err.println("compile file failed!!");
-			return "fail";
-		}
-		
-		if (!runCode()) {
-			System.out.println("run code error!!");
-			return "fail";
-		}
-		*/
-		
 		cold = new Code();
 		cold.setContent(code);
+		
+		cold.setCodeStatus("unsaved");
+		
 		if (!cold.SaveToFile()) {
 			System.err.println("save file error");
 			return "fail";
 		}
+
+		cold.setCodeStatus("saved");
 		
 		if (!cold.compile()) {
 			System.err.println("failed to compile code");
 			return "fail";
 		}
+
+		cold.setCodeStatus("compiled");
 		
 		if (!cold.Run()) {
 			System.err.println("run time error");
 			return "fail";
 		}
 		
-		return "printsuccess";
+		return "runCodeSuccess";
 	}
 
-/*	private boolean saveToFile(String code2) throws IOException {
-		
-		System.out.println("!!");
-		
-		File file = new File("d:\\tmpcode\\tmp.cpp");
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		System.out.println("!!!!!!");
-		FileWriter writer = new FileWriter(file);
-		
-		writer.write(code2);
-		writer.flush();
-		writer.close();
-		return true;
-	}*/
 }

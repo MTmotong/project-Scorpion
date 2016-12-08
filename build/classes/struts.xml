@@ -10,8 +10,9 @@
 	<package name="default" extends="struts-default">
 
 		<action name="print" class="action.PrintAction" method="printcode">
-			<result name="printsuccess">/test.jsp</result>
-			<result name="fail">/test.jsp</result>
+			<!-- <result name="printsuccess">/test.jsp</result> -->
+			<result name="runCodeSuccess">/run.jsp</result>
+			<result name="fail">/run.jsp</result>
 		</action>
 
 		<action name="testRunTime" class="action.TestRunTime">
