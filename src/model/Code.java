@@ -19,6 +19,26 @@ public class Code {
 	private String output;
 	private String compileMsg;
 	private String codeStatus;
+	private String os;
+	private String path;
+
+	public boolean isWindows() {
+		if (os.startsWith("Win") || os.startsWith("win"))
+			return true;
+		return false;
+	}
+
+	public Code() {
+		super();
+		// get runtime operating system name
+		os = System.getProperties().getProperty("os.name");
+		if (os.startsWith("win") || os.startsWith("Win")) {
+			path = "d:\\tmpcode\\";
+		} else {
+			path = "/home/hitacm/Desktop/tmpcode/";
+		}
+
+	}
 
 	public String getCodeStatus() {
 		return codeStatus;
@@ -84,29 +104,32 @@ public class Code {
 			System.err.println("empty code error");
 			return false;
 		}
-
 		FileInter fi = new FileInter();
-
 		System.out.println("input = " + input);
-		
-		
-		fi.writeFile(content, "d:\\tmpcode\\tmp.cpp");
-		fi.writeFile(input, "d:\\tmpcode\\tmp.in");
-
+		fi.writeFile(content, path + "tmp.cpp");
+		fi.writeFile(input, path + "tmp.in");
 		return true;
 	}
 
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
-		String cmd = "cmd /c g++ -o d:\\tmpcode\\a.exe d:\\tmpcode\\tmp.cpp";
+		String[] cmd = new String[3];
+
+		if (isWindows()) {
+			cmd[0] = "cmd";
+			cmd[1] = "/c";
+		} else {
+			cmd[0] = "/bin/sh";
+			cmd[1] = "-c";
+		}
+		cmd[2] = String.format("g++ -o %sa.exe %stmp.cpp", path, path);
+
 		this.setCompiled(0);
 		try {
-			File compileMsg = new File("d:\\tmpcode\\compileMsg.txt");
+			File compileMsg = new File(path + "compileMsg.txt");
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
-
 			FileWriter writer = new FileWriter(compileMsg);
-
 			Process p = runtime.exec(cmd);
 			BufferedInputStream in = new BufferedInputStream(p.getErrorStream());
 			BufferedReader inBr = new BufferedReader(new InputStreamReader(in));
@@ -133,69 +156,110 @@ public class Code {
 			System.out.println("!!!!");
 			return false;
 		}
-
+		
+		System.out.println("here");
+		
 		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile("d:\\tmpcode\\compileMsg.txt"));
+		this.setCompileMsg(fi.readFile(path+"compileMsg.txt"));
+		if (this.getCompiled() == 1) {
+			return true;
+		}
+		else {
+			this.setOutput(compileMsg);
+			System.out.println(output);
+			return false;
+		}
+	}
+	/*
+	public boolean compileShell() throws IOException {
+		Runtime runtime = Runtime.getRuntime();
+		String[] cmd = { "/bin/sh", "-c",
+				String.format("g++ -o %sa.exe %stmp.cpp", path, path) };
+
+		System.out.println(cmd[0]);
+		System.out.println(cmd[1]);
+		System.out.println(cmd[2]);
+
+		this.setCompiled(0);
+		try {
+			Process p = runtime.exec(cmd);
+			p.waitFor();
+			if (p.exitValue() == 1) {
+				this.setCompiled(0);
+				p.destroy();
+				System.err.println("compile error");
+			} else {
+				this.setCompiled(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("!!!!");
+			return false;
+		}
+		FileInter fi = new FileInter();
+		this.setCompileMsg(fi.readFile(String.format("%s%s", path,
+				"compile.log")));
+		if (this.getCompileMsg().length() == 0)
+			this.setCompiled(1);
+		else
+			this.setCompiled(0);
+
 		if (this.getCompiled() == 1)
 			return true;
 		else
 			return false;
 	}
-
+	*/
 	public Boolean Run() throws IOException {
-		String cmd = "cmd /c d:\\tmpcode\\a.exe < d:\\tmpcode\\tmp.in > d:\\tmpcode\\tmp.out";
+		String[] cmd = new String[3];
+		if (isWindows()) {
+			cmd[0] = "cmd";
+			cmd[1] = "/c";
+			// String[] cmd = {"cmd", "/c",
+			// "d:\\tmpcode\\a.exe < d:\\tmpcode\\tmp.in > d:\\tmpcode\\tmp.out"};
+		} else {
+			cmd[0] = "/bin/sh";
+			cmd[1] = "-c";
+		}
+		cmd[2] = String.format("%sa.exe < %stmp.in > %stmp.out", path, path,
+				path);
+
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
-
 		try {
-
 			System.out.println("before");
-			
 			// max execution time
-			if (!p.waitFor(20, TimeUnit.SECONDS)) {
+			if (!p.waitFor(10, TimeUnit.SECONDS)) {
 				p.destroy();
-
-				runtime.exec("taskkill /F /IM a.exe");
+				if (isWindows()) {
+					runtime.exec("taskkill /F /IM a.exe");
+				} else {
+					runtime.exec("killall a.exe");
+				}
 
 				// if (p.isAlive()) {
 				this.setCodeStatus("TLE");
-				this.setOutput("");
+				this.setOutput("TLE");
 				System.err.println("TLE");
 				p.destroy();
 				return true;
 			} else {
-
 				if (p.exitValue() != 0) {
 					this.setCodeStatus("RE");
-					this.setOutput("");
+					this.setOutput("runtime error");
 				} else {
 					FileInter fi = new FileInter();
-					this.setOutput(fi.readFile("d:\\tmpcode\\tmp.out"));
+					this.setOutput(fi.readFile(path + "tmp.out"));
 					this.setCodeStatus("exited");
 				}
 				return true;
 			}
 
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-
 			System.out.println("RE");
-
 			e1.printStackTrace();
 		}
 
 		return true;
-
-		/*
-		 * 
-		 * //p.waitFor(); if (p.isAlive()) { p.destroy(); this.setOutput("TLE");
-		 * return true; }
-		 * 
-		 * try { p.waitFor(); } catch (Exception e) { e.printStackTrace(); }
-		 * 
-		 * FileInter fi = new FileInter();
-		 * this.setOutput(fi.readFile("d:\\tmpcode\\tmp.out"));
-		 * System.out.println(this.getOutput()); return true;
-		 */
 	}
 }
