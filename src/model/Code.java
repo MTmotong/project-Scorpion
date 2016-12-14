@@ -110,7 +110,48 @@ public class Code {
 		fi.writeFile(input, path + "tmp.in");
 		return true;
 	}
-
+	
+	public boolean compileDocker() throws InterruptedException {
+		Runtime runtime = Runtime.getRuntime();
+		String [] cmd = new String[3];
+		
+		if (isWindows()) {
+			System.err.println("docker not supported on windows");
+			return false;
+		}
+		
+		FileInter fi = new FileInter();
+		
+		cmd[0] = "/bin/sh";
+		cmd[1] = "-c";
+		cmd[2] = String.format("docker run -v %s:%s compiler", path,"/mnt/");
+		
+		this.setCompiled(0);
+		
+		try {
+			Process p = runtime.exec(cmd);
+			p.waitFor();
+			
+			if (p.exitValue() != 0) {
+				this.setCompiled(0);
+			}
+			this.setCompileMsg(fi.readFile(path+"log"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("compile error");
+			return false;
+		}
+		
+		if (fi.existFile(path+"a.exe")) {
+			this.setCompiled(1);
+			return true;
+		} else {
+			this.setOutput(compileMsg);
+			return false;
+		}
+	}
+	
+	
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
 		String[] cmd = new String[3];
@@ -126,7 +167,7 @@ public class Code {
 
 		this.setCompiled(0);
 		try {
-			File compileMsg = new File(path + "compileMsg.txt");
+			File compileMsg = new File(path + "log");
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
 			FileWriter writer = new FileWriter(compileMsg);
@@ -160,7 +201,7 @@ public class Code {
 		System.out.println("here");
 		
 		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile(path+"compileMsg.txt"));
+		this.setCompileMsg(fi.readFile(path+"log"));
 		if (this.getCompiled() == 1) {
 			return true;
 		}
@@ -170,46 +211,64 @@ public class Code {
 			return false;
 		}
 	}
-	/*
-	public boolean compileShell() throws IOException {
-		Runtime runtime = Runtime.getRuntime();
-		String[] cmd = { "/bin/sh", "-c",
-				String.format("g++ -o %sa.exe %stmp.cpp", path, path) };
-
-		System.out.println(cmd[0]);
-		System.out.println(cmd[1]);
-		System.out.println(cmd[2]);
-
-		this.setCompiled(0);
-		try {
-			Process p = runtime.exec(cmd);
-			p.waitFor();
-			if (p.exitValue() == 1) {
-				this.setCompiled(0);
-				p.destroy();
-				System.err.println("compile error");
-			} else {
-				this.setCompiled(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("!!!!");
+	
+	public boolean RunDocker() throws IOException {
+		
+		System.out.println("Ready to run on docker");
+		
+		FileInter fi = new FileInter();
+		
+		if (!fi.existFile(path+"a.exe")) {
+			System.err.println("Compile Error");
 			return false;
 		}
-		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile(String.format("%s%s", path,
-				"compile.log")));
-		if (this.getCompileMsg().length() == 0)
-			this.setCompiled(1);
-		else
-			this.setCompiled(0);
-
-		if (this.getCompiled() == 1)
-			return true;
-		else
+		
+		String [] cmd = new String[3];
+		if (isWindows()) {
+			System.err.println("Docker not supported on winddows");
 			return false;
+		}
+		cmd[0] = "/bin/sh";
+		cmd[1] = "-c";
+		cmd[2] = String.format("docker run -v %s:%s runner", path,"/mnt/");
+		
+		Runtime runtime = Runtime.getRuntime();
+		Process p = runtime.exec(cmd);
+		
+		try {
+			// max execution time
+			if (!p.waitFor(10, TimeUnit.SECONDS)) {
+				p.destroy();
+				if (isWindows()) {
+					runtime.exec("taskkill /F /IM a.exe");
+				} else {
+					runtime.exec("killall a.exe");
+				}
+
+				// if (p.isAlive()) {
+				this.setCodeStatus("TLE");
+				this.setOutput("TLE");
+				System.err.println("TLE");
+				p.destroy();
+				return true;
+			} else {
+				if (p.exitValue() != 0) {
+					this.setCodeStatus("RE");
+					this.setOutput("runtime error");
+				} else {
+					this.setOutput(fi.readFile(path + "tmp.out"));
+					this.setCodeStatus("exited");
+				}
+				return true;
+			}
+
+		} catch (InterruptedException e1) {
+			System.out.println("RE");
+			e1.printStackTrace();
+		}
+		return true;
 	}
-	*/
+	
 	public Boolean Run() throws IOException {
 		String[] cmd = new String[3];
 		if (isWindows()) {
@@ -262,4 +321,14 @@ public class Code {
 
 		return true;
 	}
+	
+	public void clearFile() {
+		FileInter fi = new FileInter();
+		fi.delFile(path+"tmp.cpp");
+		fi.delFile(path+"tmp.in");
+		fi.delFile(path+"tmp.out");
+		fi.delFile(path+"log");
+		fi.delFile(path+"a.exe");
+	}
+	
 }

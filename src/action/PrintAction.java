@@ -2,6 +2,8 @@ package action;
 
 import java.io.IOException;
 
+import com.opensymphony.xwork2.util.ClearableValueStack;
+
 import model.Code;
 
 public class PrintAction {
@@ -45,34 +47,58 @@ public class PrintAction {
 		
 		result = "";
 		
+		boolean ok = true;
+		
+		
 		if (!cold.SaveToFile()) {
 			System.err.println("save file error");
 			result = "save file error";
-			return "fail";
+			ok = false;
 		}
 
 		cold.setCodeStatus("saved");
-
-		if (!cold.compile()) {
-			System.err.println("failed to compile code");
-//			System.err.println(cold.getOutput());
-			result = "faild to compile code\n" + cold.getCompileMsg();
-			return "fail";
+		
+		if (ok) {
+			if (!cold.isWindows()) {
+				if (!cold.compileDocker()) {
+					System.err.println("failed to compile in docker");
+					result = "faild to compile code\n" + cold.getCompileMsg();
+					ok = false;
+				}
+			}
+			else {
+				if (!cold.compile()) {
+					System.err.println("failed to compile code");
+		//			System.err.println(cold.getOutput());
+					result = "faild to compile code\n" + cold.getCompileMsg();
+					ok = false;
+				}
+			}
 		}
-
 		System.out.println("compiled");
 
 		cold.setCodeStatus("compiled");
-
-		if (!cold.Run()) {
-			System.err.println("run time error");
-			result = "run time error";
-			return "fail";
+		if (ok) {
+			if (!cold.isWindows()) {
+				if (!cold.RunDocker()) {
+					System.err.println("run time error");
+					result = "run time error";
+					ok = false;
+				}
+			} else {
+				if (!cold.Run()) {
+					System.err.println("run time error");
+					result = "run time error";
+					ok = false;
+				}
+			}
 		}
 		
 		setResult(cold.getOutput());
-
-		return "runCodeSuccess";
+		cold.clearFile();
+		
+		if (ok) return "runCodeSuccess";
+		else return "fail";
 	}
 
 	public String getResult() {
