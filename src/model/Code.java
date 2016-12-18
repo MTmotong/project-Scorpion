@@ -90,18 +90,18 @@ public class Code {
 		System.out.println("input = " + input);
 		
 		
-		fi.writeFile(content, "d:\\tmpcode\\tmp.cpp");
-		fi.writeFile(input, "d:\\tmpcode\\tmp.in");
+		fi.writeFile(content, "c:\\tmpcode\\tmp.cpp");
+		fi.writeFile(input, "c:\\tmpcode\\tmp.in");
 
 		return true;
 	}
 
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
-		String cmd = "cmd /c g++ -o d:\\tmpcode\\a.exe d:\\tmpcode\\tmp.cpp";
+		String cmd = "cmd /c g++ -o c:\\tmpcode\\a.exe c:\\tmpcode\\tmp.cpp";
 		this.setCompiled(0);
 		try {
-			File compileMsg = new File("d:\\tmpcode\\compileMsg.txt");
+			File compileMsg = new File("c:\\tmpcode\\compileMsg.txt");
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
 
@@ -135,7 +135,7 @@ public class Code {
 		}
 
 		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile("d:\\tmpcode\\compileMsg.txt"));
+		this.setCompileMsg(fi.readFile("c:\\tmpcode\\compileMsg.txt"));
 		if (this.getCompiled() == 1)
 			return true;
 		else
@@ -143,7 +143,7 @@ public class Code {
 	}
 
 	public Boolean Run() throws IOException {
-		String cmd = "cmd /c d:\\tmpcode\\a.exe < d:\\tmpcode\\tmp.in > d:\\tmpcode\\tmp.out";
+		String cmd = "cmd /c c:\\tmpcode\\a.exe < c:\\tmpcode\\tmp.in > c:\\tmpcode\\tmp.out";
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
 
@@ -170,7 +170,7 @@ public class Code {
 					this.setOutput("");
 				} else {
 					FileInter fi = new FileInter();
-					this.setOutput(fi.readFile("d:\\tmpcode\\tmp.out"));
+					this.setOutput(fi.readFile("c:\\tmpcode\\tmp.out"));
 					this.setCodeStatus("exited");
 				}
 				return true;

@@ -9,7 +9,9 @@
 
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css">
 	<link href="css/navbar.css" rel="stylesheet" type="text/css" />
-	
+	<link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/js/bootstrap.min.js"></script>
 	
@@ -61,8 +63,8 @@
 			<div id="navbar" class="collapse navbar-collapse"><!-- 给导航栏添加响应式，包裹在带有.collapse、.navbar-collapse  -->
 		          <ul class="nav navbar-nav" id="myTab"><!--nav navbar-nav 导航栏添加链接-->
 			            <li class="active"><a href="#"> C++在线测试</a></li>
-			            <li><a href="#"> 关于</a></li>
-						<li><a href="#"> 联系</a></li>
+			            <li><a href="compile.jsp"> Project</a></li>
+						<li><a href="compile.jsp"> File</a></li>
 		          </ul>
 		    </div>
 		</div>
