@@ -20,6 +20,14 @@ public class Code {
 	private String compileMsg;
 	private String codeStatus;
 
+	public static int Id = 0;
+	
+	public Code()
+	{
+		Id++;
+	}
+	
+	
 	public String getCodeStatus() {
 		return codeStatus;
 	}
@@ -90,18 +98,18 @@ public class Code {
 		System.out.println("input = " + input);
 		
 		
-		fi.writeFile(content, "d:\\tmpcode\\tmp.cpp");
-		fi.writeFile(input, "d:\\tmpcode\\tmp.in");
+		fi.writeFile(content, "d:\\tmpcode\\tmp"+Id+".cpp");
+		fi.writeFile(input, "d:\\tmpcode\\tmp"+Id+".in");
 
 		return true;
 	}
 
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
-		String cmd = "cmd /c g++ -o d:\\tmpcode\\a.exe d:\\tmpcode\\tmp.cpp";
+		String cmd = "cmd /c g++ -o d:\\tmpcode\\a"+Id+".exe d:\\tmpcode\\tmp"+Id+".cpp";
 		this.setCompiled(0);
 		try {
-			File compileMsg = new File("d:\\tmpcode\\compileMsg.txt");
+			File compileMsg = new File("d:\\tmpcode\\compileMsg"+Id+".txt");
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
 
@@ -135,7 +143,7 @@ public class Code {
 		}
 
 		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile("d:\\tmpcode\\compileMsg.txt"));
+		this.setCompileMsg(fi.readFile("d:\\tmpcode\\compileMsg"+Id+".txt"));
 		if (this.getCompiled() == 1)
 			return true;
 		else
@@ -143,7 +151,7 @@ public class Code {
 	}
 
 	public Boolean Run() throws IOException {
-		String cmd = "cmd /c d:\\tmpcode\\a.exe < d:\\tmpcode\\tmp.in > d:\\tmpcode\\tmp.out";
+		String cmd = "cmd /c d:\\tmpcode\\a"+Id+".exe < d:\\tmpcode\\tmp"+Id+".in > d:\\tmpcode\\tmp"+Id+".out";
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
 
@@ -155,7 +163,7 @@ public class Code {
 			if (!p.waitFor(20, TimeUnit.SECONDS)) {
 				p.destroy();
 
-				runtime.exec("taskkill /F /IM a.exe");
+				runtime.exec("taskkill /F /IM a"+Id+".exe");
 
 				// if (p.isAlive()) {
 				this.setCodeStatus("TLE");
@@ -170,7 +178,7 @@ public class Code {
 					this.setOutput("");
 				} else {
 					FileInter fi = new FileInter();
-					this.setOutput(fi.readFile("d:\\tmpcode\\tmp.out"));
+					this.setOutput(fi.readFile("d:\\tmpcode\\tmp"+Id+".out"));
 					this.setCodeStatus("exited");
 				}
 				return true;
