@@ -13,7 +13,7 @@
 	<script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/js/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
 	
 	
 	

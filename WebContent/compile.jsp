@@ -39,6 +39,9 @@
             margin-right: -10px;  
         }  
         
+        body {
+        	background-color: #e5eecc;
+        }
     </style>  
 	
 </head>
@@ -48,7 +51,7 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid"> 
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Scorpion</a>
+				<a class="navbar-brand" href="iEasy.jsp">Scorpion</a>
 			</div>
 			<!-- left -->
 			<p class="navbar-text navbar-left">C++编译器</p>
@@ -157,5 +160,6 @@
 		</div>
 	</nav>
 
+	
 </body>
 </html>
