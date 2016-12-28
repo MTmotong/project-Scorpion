@@ -37,9 +37,13 @@ public class Code {
 		} else {
 			path = "/home/py/tmpcode/";
 		}
+		Id++;
 
 	}
 
+	public static int Id = 0;
+	
+	
 	public String getCodeStatus() {
 		return codeStatus;
 	}
@@ -129,6 +133,15 @@ public class Code {
 		cmd[1] = "-c";
 		cmd[2] = String.format("docker run -v %s:%s -u py compiler", path, "/mnt/");
 
+		/*
+		 * i'm sorry that but i met some trouble adding the multiple process to the system
+		 * 
+		 * 
+		System.out.println("input = " + input);		
+		fi.writeFile(content, "d:\\tmpcode\\tmp"+Id+".cpp");
+		fi.writeFile(input, "d:\\tmpcode\\tmp"+Id+".in");
+		*/
+
 		this.setCompiled(0);
 
 		try {
@@ -170,6 +183,7 @@ public class Code {
 		this.setCompiled(0);
 		try {
 			File compileMsg = new File(path + "log");
+
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
 			FileWriter writer = new FileWriter(compileMsg);
@@ -292,7 +306,7 @@ public class Code {
 		try {
 			System.out.println("before");
 			// max execution time
-			if (!p.waitFor(10, TimeUnit.SECONDS)) {
+			if (!p.waitFor(5, TimeUnit.SECONDS)) {
 				p.destroy();
 				if (isWindows()) {
 					runtime.exec("taskkill /F /IM a.exe");
@@ -300,7 +314,8 @@ public class Code {
 					runtime.exec("killall a.exe");
 				}
 
-				// if (p.isAlive()) {
+				//runtime.exec("taskkill /F /IM a"+Id+".exe");
+
 				this.setCodeStatus("TLE");
 				this.setOutput("TLE");
 				System.err.println("TLE");
@@ -313,6 +328,7 @@ public class Code {
 				} else {
 					FileInter fi = new FileInter();
 					this.setOutput(fi.readFile(path + "tmp.out"));
+//					this.setOutput(fi.readFile("d:\\tmpcode\\tmp"+Id+".out"));
 					this.setCodeStatus("exited");
 				}
 				return true;

@@ -124,9 +124,11 @@
 		var myTextarea = document.getElementById('code');
 		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
 			
+			//光标大小
+			cursorHeight: 1,
 			
 			//高亮类型
-		    mode: "text/x-c++src",
+		    mode: "text/x-csrc",
 		    
 		    //显示行号
 		    lineNumbers: true,
@@ -173,14 +175,12 @@
 	    input.value = theme; 
 	    selectTheme(); }
 	  });
-	</script>
- 
- 	
- 	<script>
-		function changeFontSize(size){
+	  
+	  
+	  function changeFontSize(size){
 			document.getElementById("setfont").style.fontSize=size;
-			
+			CodeMirrorEditor.refresh();
 		} 
-	 </script>
+	</script>
 </body>
 </html>
