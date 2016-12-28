@@ -11,7 +11,9 @@ public class PrintAction {
 	private String code;
 	private String input;
 	private String result;
-
+	private String erromsg;
+	
+	
 	public String getInput() {
 		return input;
 	}
@@ -35,20 +37,28 @@ public class PrintAction {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
+	public String getErromsg() {
+		return erromsg;
+	}
+
+	public void setErromsg(String erromsg) {
+		this.erromsg = erromsg;
+	}
 
 	public String printcode() throws IOException, InterruptedException {
-
-		System.out.println(code);
-		System.err.println("input = " + input);
 		cold = new Code();
+		cold.clearFile();
 		cold.setContent(code);
 		cold.setInput(input);
 		cold.setCodeStatus("unsaved");
 		
 		result = "";
+		erromsg = "";
 		
+		// ok = 1
+		// code status = ok
 		boolean ok = true;
-		
 		
 		if (!cold.SaveToFile()) {
 			System.err.println("save file error");
@@ -69,14 +79,13 @@ public class PrintAction {
 			else {
 				if (!cold.compile()) {
 					System.err.println("failed to compile code");
-		//			System.err.println(cold.getOutput());
 					result = "faild to compile code\n" + cold.getCompileMsg();
 					ok = false;
 				}
 			}
 		}
+		
 		System.out.println("compiled");
-
 		cold.setCodeStatus("compiled");
 		if (ok) {
 			if (!cold.isWindows()) {

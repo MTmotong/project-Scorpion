@@ -35,7 +35,7 @@ public class Code {
 		if (os.startsWith("win") || os.startsWith("Win")) {
 			path = "d:\\tmpcode\\";
 		} else {
-			path = "/home/hitacm/Desktop/tmpcode/";
+			path = "/home/py/tmpcode/";
 		}
 
 	}
@@ -100,6 +100,9 @@ public class Code {
 
 	// save code and it's input into d:\\tmpcode\\tmp.cpp | tmp.in
 	public Boolean SaveToFile() throws IOException {
+		
+		
+		
 		if (content == null) {
 			System.err.println("empty code error");
 			return false;
@@ -110,39 +113,39 @@ public class Code {
 		fi.writeFile(input, path + "tmp.in");
 		return true;
 	}
-	
+
 	public boolean compileDocker() throws InterruptedException {
 		Runtime runtime = Runtime.getRuntime();
-		String [] cmd = new String[3];
-		
+		String[] cmd = new String[3];
+
 		if (isWindows()) {
 			System.err.println("docker not supported on windows");
 			return false;
 		}
-		
+
 		FileInter fi = new FileInter();
-		
+
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s compiler", path,"/mnt/");
-		
+		cmd[2] = String.format("docker run -v %s:%s -u py compiler", path, "/mnt/");
+
 		this.setCompiled(0);
-		
+
 		try {
 			Process p = runtime.exec(cmd);
 			p.waitFor();
-			
+
 			if (p.exitValue() != 0) {
 				this.setCompiled(0);
 			}
-			this.setCompileMsg(fi.readFile(path+"log"));
+			this.setCompileMsg(fi.readFile(path + "log"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("compile error");
 			return false;
 		}
-		
-		if (fi.existFile(path+"a.exe")) {
+
+		if (fi.existFile(path + "a.exe")) {
 			this.setCompiled(1);
 			return true;
 		} else {
@@ -150,8 +153,7 @@ public class Code {
 			return false;
 		}
 	}
-	
-	
+
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
 		String[] cmd = new String[3];
@@ -197,47 +199,46 @@ public class Code {
 			System.out.println("!!!!");
 			return false;
 		}
-		
+
 		System.out.println("here");
-		
+
 		FileInter fi = new FileInter();
-		this.setCompileMsg(fi.readFile(path+"log"));
+		this.setCompileMsg(fi.readFile(path + "log"));
 		if (this.getCompiled() == 1) {
 			return true;
-		}
-		else {
+		} else {
 			this.setOutput(compileMsg);
 			System.out.println(output);
 			return false;
 		}
 	}
-	
+
 	public boolean RunDocker() throws IOException {
-		
+
 		System.out.println("Ready to run on docker");
-		
+
 		FileInter fi = new FileInter();
-		
-		if (!fi.existFile(path+"a.exe")) {
+
+		if (!fi.existFile(path + "a.exe")) {
 			System.err.println("Compile Error");
 			return false;
 		}
-		
-		String [] cmd = new String[3];
+
+		String[] cmd = new String[3];
 		if (isWindows()) {
 			System.err.println("Docker not supported on winddows");
 			return false;
 		}
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s runner", path,"/mnt/");
-		
+		cmd[2] = String.format("docker run -v %s:%s -u py runner", path, "/mnt/");
+
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
-		
+
 		try {
 			// max execution time
-			if (!p.waitFor(10, TimeUnit.SECONDS)) {
+			if (!p.waitFor(5, TimeUnit.SECONDS)) {
 				p.destroy();
 				if (isWindows()) {
 					runtime.exec("taskkill /F /IM a.exe");
@@ -252,8 +253,9 @@ public class Code {
 				p.destroy();
 				return true;
 			} else {
-				int runResult = Integer.valueOf(fi.readFile(path + "returnvalue").replace("\n", ""));
-				
+				int runResult = Integer.valueOf(fi.readFile(
+						path + "returnvalue").replace("\n", ""));
+
 				if (runResult != 0) {
 					this.setCodeStatus("RE");
 					this.setOutput("runtime error");
@@ -270,7 +272,7 @@ public class Code {
 		}
 		return true;
 	}
-	
+
 	public Boolean Run() throws IOException {
 		String[] cmd = new String[3];
 		if (isWindows()) {
@@ -323,15 +325,15 @@ public class Code {
 
 		return true;
 	}
-	
+
 	public void clearFile() {
 		FileInter fi = new FileInter();
-		fi.delFile(path+"tmp.cpp");
-		fi.delFile(path+"tmp.in");
-		fi.delFile(path+"tmp.out");
-		fi.delFile(path+"log");
-		fi.delFile(path+"a.exe");
-		fi.delFile(path+"returnvalue");
+		fi.delFile(path + "tmp.cpp");
+		fi.delFile(path + "tmp.in");
+		fi.delFile(path + "tmp.out");
+		fi.delFile(path + "log");
+		fi.delFile(path + "a.exe");
+		fi.delFile(path + "returnvalue");
 	}
-	
+
 }
