@@ -252,7 +252,9 @@ public class Code {
 				p.destroy();
 				return true;
 			} else {
-				if (p.exitValue() != 0) {
+				int runResult = Integer.valueOf(fi.readFile(path + "returnvalue").replace("\n", ""));
+				
+				if (runResult != 0) {
 					this.setCodeStatus("RE");
 					this.setOutput("runtime error");
 				} else {
@@ -329,6 +331,7 @@ public class Code {
 		fi.delFile(path+"tmp.out");
 		fi.delFile(path+"log");
 		fi.delFile(path+"a.exe");
+		fi.delFile(path+"returnvalue");
 	}
 	
 }
