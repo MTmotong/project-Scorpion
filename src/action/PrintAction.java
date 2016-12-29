@@ -1,9 +1,10 @@
 package action;
 
+import java.io.File;
 import java.io.IOException;
-
-import com.opensymphony.xwork2.util.ClearableValueStack;
-
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import model.Code;
 
 public class PrintAction {
@@ -60,6 +61,43 @@ public class PrintAction {
 		// code status = ok
 		boolean ok = true;
 		
+		
+		// add file lock
+		
+		File file = new File(cold.getPath()+"lock");
+		
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		RandomAccessFile out = new RandomAccessFile(file, "rw");
+		FileChannel fcout = out.getChannel();
+		FileLock flout = null;
+		
+		
+		while(true) {
+			flout = fcout.tryLock();
+			
+			if (flout != null) break;
+			
+			System.err.println("waiting other process to finish!!");
+			
+			Thread.sleep(300);
+			
+		}
+		
+		/*while(true) {
+			try {
+				flout = fcout.tryLock();
+				break;
+			} catch (Exception e) {
+				System.err.println("waiting other process to finish!!");
+				Thread.sleep(1000);
+			}
+		}*/
+		
+		
+		
 		if (!cold.SaveToFile()) {
 			System.err.println("save file error");
 			result = "save file error";
@@ -105,6 +143,11 @@ public class PrintAction {
 		
 		setResult(cold.getOutput());
 		cold.clearFile();
+		
+		flout.release();
+		fcout.close();
+		out.close();
+		out=null;
 		
 		if (ok) return "runCodeSuccess";
 		else return "fail";

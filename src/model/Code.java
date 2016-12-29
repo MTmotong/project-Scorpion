@@ -166,6 +166,10 @@ public class Code {
 			return false;
 		}
 	}
+	
+	public String getPath() {
+		return path;
+	}
 
 	public Boolean compile() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
@@ -252,7 +256,7 @@ public class Code {
 
 		try {
 			// max execution time
-			if (!p.waitFor(5, TimeUnit.SECONDS)) {
+			if (!p.waitFor(20, TimeUnit.SECONDS)) {
 				p.destroy();
 				if (isWindows()) {
 					runtime.exec("taskkill /F /IM a.exe");
