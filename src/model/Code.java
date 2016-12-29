@@ -131,7 +131,7 @@ public class Code {
 
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s -u py compiler", path, "/mnt/");
+		cmd[2] = String.format("docker run -v %s:%s -u tomcat7 compiler", path, "/mnt/");
 
 		/*
 		 * i'm sorry that but i met some trouble adding the multiple process to the system
@@ -249,7 +249,8 @@ public class Code {
 		}
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s -u py runner", path, "/mnt/");
+		// change user to tomcat7
+		cmd[2] = String.format("docker run -v %s:%s -u tomcat7 runner", path, "/mnt/");
 
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
