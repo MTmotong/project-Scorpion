@@ -20,6 +20,14 @@ public class Code {
 	private String compileMsg;
 	private String codeStatus;
 
+	public static int Id = 0;
+	
+	public Code()
+	{
+		Id++;
+	}
+	
+	
 	public String getCodeStatus() {
 		return codeStatus;
 	}
@@ -88,10 +96,10 @@ public class Code {
 		FileInter fi = new FileInter();
 
 		System.out.println("input = " + input);
-		
-		
+
 		fi.writeFile(content, "c:\\tmpcode\\tmp.cpp");
 		fi.writeFile(input, "c:\\tmpcode\\tmp.in");
+
 
 		return true;
 	}
@@ -102,6 +110,7 @@ public class Code {
 		this.setCompiled(0);
 		try {
 			File compileMsg = new File("c:\\tmpcode\\compileMsg.txt");
+
 			if (!compileMsg.exists())
 				compileMsg.createNewFile();
 
@@ -136,6 +145,7 @@ public class Code {
 
 		FileInter fi = new FileInter();
 		this.setCompileMsg(fi.readFile("c:\\tmpcode\\compileMsg.txt"));
+
 		if (this.getCompiled() == 1)
 			return true;
 		else
@@ -155,7 +165,7 @@ public class Code {
 			if (!p.waitFor(20, TimeUnit.SECONDS)) {
 				p.destroy();
 
-				runtime.exec("taskkill /F /IM a.exe");
+				runtime.exec("taskkill /F /IM a"+Id+".exe");
 
 				// if (p.isAlive()) {
 				this.setCodeStatus("TLE");

@@ -94,19 +94,23 @@
 			                    <div class="row-fluid">
 	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++代码:</strong></label>
 	                  				
-                  					字体大小:
+                  					字体大小:<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
+                  							
+                  					</s:select>
                   					
+                  					
+                  					
+                  					
+                  					<!-- 
                   					
                   					<input name="" type="button" onclick="changeFontSize('34px')" value="大"/> 
                   					<input name="" type="button" onclick="changeFontSize('24px')" value="中"/> 
 									<input name="" type="button" onclick="changeFontSize('14px')" value="小"/>
-									
+									 -->
                   					
  									
- 									选择主题: <select onchange="selectTheme()" id="select">
- 									 <option selected>seti</option>
- 									 <option>eclipse</option>
- 									 </select>
+ 									选择主题: <s:select onchange="selectTheme()" name="Theme" list="#{'seti':'seti','eclipse':'eclipse' }"  id="select" value="%{Theme}">					
+ 									 </s:select>
  									 F11:全屏
  									 
 	                   				<s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit>
@@ -126,6 +130,7 @@
 	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
 	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
 	                  			<input value="添加序号" type="button" onClick="addNumber();">
+
 	                	  	</div>
 	                	</div>   
 	   				</s:form>
@@ -140,9 +145,11 @@
 		var myTextarea = document.getElementById('code');
 		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
 			
+			//光标大小
+			cursorHeight: 1,
 			
 			//高亮类型
-		    mode: "text/x-c++src",
+		    mode: "text/x-csrc",
 		    
 		    //显示行号
 		    lineNumbers: true,
@@ -170,6 +177,7 @@
 		CodeMirrorEditor.setSize('auto','450')
 		
 		
+	//设置主题
 	  var input = document.getElementById("select");
 	  function selectTheme() {
 	    var theme = input.options[input.selectedIndex].textContent;
@@ -189,15 +197,20 @@
 	    input.value = theme; 
 	    selectTheme(); }
 	  });
+	  
+	  //设置字体大小
+	  var size = document.getElementById("selfontsize");
+	  function changeFontSize(){
+			document.getElementById("setfont").style.fontSize=size.value;
+			CodeMirrorEditor.refresh();
+		} 
+	  window.onload = changeFontSize()
+	  window.onload = selectTheme()
+		  
 	</script>
  
  	
- 	<script>
-		function changeFontSize(size){
-			document.getElementById("setfont").style.fontSize=size;
-			
-		} 
-	 </script>
+ 	
 </body>
 </html>
 
