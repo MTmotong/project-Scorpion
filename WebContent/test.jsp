@@ -45,6 +45,19 @@
 	
 	
 	
+	<script type="text/javascript">
+		document.getElementById("showlinenum").disabled = "disabled";
+		function addNumber() {
+		    var t = document.getElementById("showlinenum"), s = t.value.split("\n"), len = s.length;
+		    for (var i = 1; i <= len; i++) {
+		        if ("" != s[i - 1]) {
+		            s[i - 1] = i + "." + s[i - 1];
+		        }
+		    }
+		    t.value = s.join("\n");
+		}
+	</script>
+	
 	
 </head>
 <body>
@@ -111,7 +124,8 @@
 	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
 	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
 	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
-	                  			<s:textarea name="result" class="form-control" style="height:310px;"></s:textarea>
+	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
+	                  			<input value="添加序号" type="button" onClick="addNumber();">
 	                	  	</div>
 	                	</div>   
 	   				</s:form>
@@ -186,3 +200,10 @@
 	 </script>
 </body>
 </html>
+
+
+
+
+
+
+
