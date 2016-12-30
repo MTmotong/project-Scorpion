@@ -1,7 +1,6 @@
 package action;
 
 import java.io.IOException;
-
 import model.Code;
 
 public class PrintAction {
@@ -9,6 +8,8 @@ public class PrintAction {
 	private String code;
 	private String input;
 	private String result;
+	private String FontSize;
+	private String Theme;
 	public String getInput() {
 		return input;
 	}
@@ -62,6 +63,7 @@ public class PrintAction {
 			return "fail";
 		}
 		setResult(cold.getOutput());
+		
 		return "runCodeSuccess";
 	}
 
@@ -71,6 +73,22 @@ public class PrintAction {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getFontSize() {
+		return FontSize;
+	}
+
+	public void setFontSize(String fontSize) {
+		FontSize = fontSize;
+	}
+
+	public String getTheme() {
+		return Theme;
+	}
+
+	public void setTheme(String theme) {
+		Theme = theme;
 	}
 
 }
