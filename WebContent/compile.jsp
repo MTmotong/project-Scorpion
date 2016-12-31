@@ -94,7 +94,46 @@
 		    t.value = s.join("\n");
 		}
 	</script>
-	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			/* $('#quesBtn').addClass('btn-group-vertical')
+						 .css('width','10%')
+						 .css('position', 'fixed')
+						 .css('height', '42%'); */
+			$('#RunBtn').attr('type', 'button')
+						.fadeTo(0, 0.7)
+						.addClass('btn-default')
+						.click(output);
+		});
+
+		function output() {
+			$('#out').append(
+				'<div class="container">\
+			 		<div class="row">\
+				 		<div class="col-sm-12">\
+					 		<div class="panel panel-success  output">\
+							    <div class="panel-heading form-inline" style="background-color:#e5eecc;">\
+							        <span class="panel-title no"></span><span class="panel-title">输出</span>\
+							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
+							    </div>\
+							    <div class="panel-body">\
+							    	<textarea style="height:200px;width:100%;border-color:#d6e9c6;"></textarea>\
+							    </div>\
+							</div>\
+						<div>\
+		         	</div>\
+			 	</div>');
+
+		}
+		function popQues(thisItem) {
+			var thisQues = $(thisItem).parents('.output');
+			thisQues.nextAll().each(function() {
+				$(this).find('.no').text(parseInt($(this).find('.no').text(), 10) - 1);
+			});
+			thisQues.remove();
+			--quesCount;
+		}
+	</script>
 	
 </head>
 <body style="background:white;">
@@ -122,45 +161,7 @@
 					<li><a href="#">Setting</a></li>
 					<li><a href="#">Help</a></li>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							View <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li class="dropdown-submenu">
-								<a href="#">General</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">show line numbers in Output</a></li>
-									<li><a href="#">Eclipse</a></li>
-								</ul>
-							</li>
-							<li class="dropdown-submenu">
-								<a href="#">Editor Theme</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">seti</a></li>
-									<li><a href="#">Eclipse</a></li>
-								</ul>
-							</li>
-							<li class="dropdown-submenu">
-								<a href="#">Font Size</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">huge</a></li>
-									<li><a href="#">middle</a></li>
-									<li><a href="#">little</a></li>
-								</ul>
-							</li>
-							<li class="divider"></li>
-					        <li>
-					            <a tabindex="-1" href="#">Show Invisible</a>
-					        </li>
-					        <li class="divider"></li>
-					        <li >
-					            <a tabindex="-1" href="#">Show Gutter</a>
-					        </li>
-						</ul>
-					</li>
-				</ul>
+				
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -196,6 +197,45 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							View <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-submenu">
+								<a href="#">General</a>
+								<ul class="dropdown-menu">
+									<li><a href="#">line numbers</a></li>
+									
+								</ul>
+							</li>
+							<li class="dropdown-submenu">
+								<a href="#">Editor Theme</a>
+								<ul class="dropdown-menu">
+									<li><a href="#">seti</a></li>
+									<li><a href="#">Eclipse</a></li>
+								</ul>
+							</li>
+							<li class="dropdown-submenu">
+								<a href="#">Font Size</a>
+								<ul class="dropdown-menu">
+									<li><a href="#">huge</a></li>
+									<li><a href="#">middle</a></li>
+									<li><a href="#">little</a></li>
+								</ul>
+							</li>
+							<li class="divider"></li>
+					        <li>
+					            <a tabindex="-1" href="#">Show Invisible</a>
+					        </li>
+					        <li class="divider"></li>
+					        <li >
+					            <a tabindex="-1" href="#">Show Gutter</a>
+					        </li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							Project <b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
@@ -224,16 +264,15 @@
 	   		
 	   				<s:form action="print" method="post" theme="simple" autocomplete="off" role="form">
 	   					<div class="row" >
-	                		<div class="col-sm-6" id="LeftPane">
+	                		<div class="col-sm-12">
 			                    <div class="row-fluid">
-	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++代码:</strong></label>
+	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++:</strong></label>
 	                  				
-                  					字体大小:
+                  					<%-- 字体大小:
                   					
-                  					
-                  					<input name="" type="button" onclick="changeFontSize('34px')" value="大"/> 
-                  					<input name="" type="button" onclick="changeFontSize('24px')" value="中"/> 
-									<input name="" type="button" onclick="changeFontSize('14px')" value="小"/>
+                  					<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
+                  							
+                  					</s:select>
 									
                   					
  									
@@ -241,35 +280,47 @@
  									 <option selected>seti</option>
  									 <option>eclipse</option>
  									 </select>
- 									 F11:全屏
- 									 
-	                   				<s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit>
+ 									 F11:全屏 --%>
+ 									
 	                   				<input type="hidden" id="bt" name="bt">
 	                   				<div id="setfont"> 
 	                   					<s:textarea theme="simple" name="code" id="code" />
 	                   				</div>
+	                   				
+	                   				<%-- <s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit> --%>
 	                    		</div>
 	                    		<!-- <textarea class="form-control" theme="simple" id="code" name="code" >
 	                    			
 								</textarea> -->
 	                 	 	</div>
-	                  		<div class="col-sm-6" id="RightPane">
+	                  		<%-- <div class="col-sm-6">
 			            		<label><strong style="font-size: 16px;color:#617f10;"> 输入：</strong></label>
 	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
 	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
 	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
 	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
 	                  			<input value="添加序号" type="button" onClick="addNumber();">
-	                	  	</div>
+	                	  	</div> --%>
 	                	</div>   
 	   				</s:form>
 	
 	            </div>
 	    	</div>
 	 	</div>
+	 	<div id="out">
+			<button id="RunBtn" type="button" class="btn btn-primary btn-lg"  style="pull-right;">Run</button>
+		</div>
  	</div>
+ 	<!-- <div class="container">
+ 		<div class="row">
+ 			<div class="col-sm-12">
+ 				<div id="out">
+			 		<button id="RunBtn" type="button" class="btn btn-lg">Run</button>
+				</div>
+ 			</div>
+	 	</div>
+ 	</div> -->
  	
-      	
 	<script>
 		var myTextarea = document.getElementById('code');
 		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
@@ -335,7 +386,36 @@
 </body>
 </html>
 
-
+<%-- <div class="container">\
+			 		<div class="row">\
+				 		<div class="col-sm-12">\
+					 		<div class="panel panel-success  output">\
+							    <div class="panel-heading form-inline">\
+							        <span class="panel-title no"></span><span class="panel-title">. 简答题</span>\
+							        <input type="text" style="width:100px; height:28px; margin-left:20px" class="tag form-control" placeholder="标签"/>\
+							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
+							    </div>\
+							    <div class="panel-body">\
+							    	<label for="content">问题</label><input id="content" type="text" class="content form-control">\
+							        <label for="answer">答案</label>\
+							        <div id="answer" class="input-group">\
+							        	<input type="text" class="answer form-control">\
+							        	<span class="input-group-addon">\
+					                        <select class="score">\
+					                        	<option value="0">0</option>\
+					                            <option value="1">1</option>\
+					                            <option value="2">2 </option>\
+					                            <option value="3">3</option>\
+					                            <option value="4">4</option>\
+					                            <option value="5">5</option>\
+					                        </select>\
+					                    </span>\
+							        </div>\
+							    </div>\
+							</div>\
+						<div>\
+		         	</div>\
+			 	</div> --%>
 
 
 
