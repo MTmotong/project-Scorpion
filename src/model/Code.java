@@ -42,8 +42,7 @@ public class Code {
 	}
 
 	public static int Id = 0;
-	
-	
+
 	public String getCodeStatus() {
 		return codeStatus;
 	}
@@ -104,9 +103,7 @@ public class Code {
 
 	// save code and it's input into d:\\tmpcode\\tmp.cpp | tmp.in
 	public Boolean SaveToFile() throws IOException {
-		
-		
-		
+
 		if (content == null) {
 			System.err.println("empty code error");
 			return false;
@@ -131,16 +128,18 @@ public class Code {
 
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s -u py compiler", path, "/mnt/");
+		cmd[2] = String.format("docker run -v %s:%s -u py compiler", path,
+				"/mnt/");
 
 		/*
-		 * i'm sorry that but i met some trouble adding the multiple process to the system
+		 * i'm sorry that but i met some trouble adding the multiple process to
+		 * the system
 		 * 
 		 * 
-		System.out.println("input = " + input);		
-		fi.writeFile(content, "d:\\tmpcode\\tmp"+Id+".cpp");
-		fi.writeFile(input, "d:\\tmpcode\\tmp"+Id+".in");
-		*/
+		 * System.out.println("input = " + input); fi.writeFile(content,
+		 * "d:\\tmpcode\\tmp"+Id+".cpp"); fi.writeFile(input,
+		 * "d:\\tmpcode\\tmp"+Id+".in");
+		 */
 
 		this.setCompiled(0);
 
@@ -166,7 +165,7 @@ public class Code {
 			return false;
 		}
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
@@ -249,7 +248,8 @@ public class Code {
 		}
 		cmd[0] = "/bin/sh";
 		cmd[1] = "-c";
-		cmd[2] = String.format("docker run -v %s:%s -u py runner", path, "/mnt/");
+		cmd[2] = String.format("docker run -v %s:%s -u py runner", path,
+				"/mnt/");
 
 		Runtime runtime = Runtime.getRuntime();
 		Process p = runtime.exec(cmd);
@@ -318,7 +318,7 @@ public class Code {
 					runtime.exec("killall a.exe");
 				}
 
-				//runtime.exec("taskkill /F /IM a"+Id+".exe");
+				// runtime.exec("taskkill /F /IM a"+Id+".exe");
 
 				this.setCodeStatus("TLE");
 				this.setOutput("TLE");
@@ -332,7 +332,7 @@ public class Code {
 				} else {
 					FileInter fi = new FileInter();
 					this.setOutput(fi.readFile(path + "tmp.out"));
-//					this.setOutput(fi.readFile("d:\\tmpcode\\tmp"+Id+".out"));
+					// this.setOutput(fi.readFile("d:\\tmpcode\\tmp"+Id+".out"));
 					this.setCodeStatus("exited");
 				}
 				return true;

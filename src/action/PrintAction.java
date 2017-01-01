@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+
 import model.Code;
 
 public class PrintAction {
@@ -13,7 +14,8 @@ public class PrintAction {
 	private String input;
 	private String result;
 	private String erromsg;
-	
+	private String FontSize;
+	private String Theme;
 	
 	public String getInput() {
 		return input;
@@ -159,6 +161,22 @@ public class PrintAction {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getFontSize() {
+		return FontSize;
+	}
+
+	public void setFontSize(String fontSize) {
+		FontSize = fontSize;
+	}
+
+	public String getTheme() {
+		return Theme;
+	}
+
+	public void setTheme(String theme) {
+		Theme = theme;
 	}
 
 }

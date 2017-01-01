@@ -9,9 +9,11 @@
 
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css">
 	<link href="css/navbar.css" rel="stylesheet" type="text/css" />
-	
+	<link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/js/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
 	
 	
 	
@@ -43,6 +45,19 @@
 	
 	
 	
+	<script type="text/javascript">
+		document.getElementById("showlinenum").disabled = "disabled";
+		function addNumber() {
+		    var t = document.getElementById("showlinenum"), s = t.value.split("\n"), len = s.length;
+		    for (var i = 1; i <= len; i++) {
+		        if ("" != s[i - 1]) {
+		            s[i - 1] = i + "." + s[i - 1];
+		        }
+		    }
+		    t.value = s.join("\n");
+		}
+	</script>
+	
 	
 </head>
 <body>
@@ -61,8 +76,8 @@
 			<div id="navbar" class="collapse navbar-collapse"><!-- 给导航栏添加响应式，包裹在带有.collapse、.navbar-collapse  -->
 		          <ul class="nav navbar-nav" id="myTab"><!--nav navbar-nav 导航栏添加链接-->
 			            <li class="active"><a href="#"> C++在线测试</a></li>
-			            <li><a href="#"> 关于</a></li>
-						<li><a href="#"> 联系</a></li>
+			            <li><a href="compile.jsp"> Project</a></li>
+						<li><a href="compile.jsp"> File</a></li>
 		          </ul>
 		    </div>
 		</div>
@@ -79,19 +94,23 @@
 			                    <div class="row-fluid">
 	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++代码:</strong></label>
 	                  				
-                  					字体大小:
+                  					字体大小:<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
+                  							
+                  					</s:select>
                   					
+                  					
+                  					
+                  					
+                  					<!-- 
                   					
                   					<input name="" type="button" onclick="changeFontSize('34px')" value="大"/> 
                   					<input name="" type="button" onclick="changeFontSize('24px')" value="中"/> 
 									<input name="" type="button" onclick="changeFontSize('14px')" value="小"/>
-									
+									 -->
                   					
  									
- 									选择主题: <select onchange="selectTheme()" id="select">
- 									 <option selected>seti</option>
- 									 <option>eclipse</option>
- 									 </select>
+ 									选择主题: <s:select onchange="selectTheme()" name="Theme" list="#{'seti':'seti','eclipse':'eclipse' }"  id="select" value="%{Theme}">					
+ 									 </s:select>
  									 F11:全屏
  									 
 	                   				<s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit>
@@ -109,7 +128,9 @@
 	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
 	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
 	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
-	                  			<s:textarea name="result" class="form-control" style="height:310px;"></s:textarea>
+	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
+	                  			<input value="添加序号" type="button" onClick="addNumber();">
+
 	                	  	</div>
 	                	</div>   
 	   				</s:form>
@@ -156,6 +177,7 @@
 		CodeMirrorEditor.setSize('auto','450')
 		
 		
+	//设置主题
 	  var input = document.getElementById("select");
 	  function selectTheme() {
 	    var theme = input.options[input.selectedIndex].textContent;
@@ -176,11 +198,25 @@
 	    selectTheme(); }
 	  });
 	  
-	  
-	  function changeFontSize(size){
-			document.getElementById("setfont").style.fontSize=size;
+	  //设置字体大小
+	  var size = document.getElementById("selfontsize");
+	  function changeFontSize(){
+			document.getElementById("setfont").style.fontSize=size.value;
 			CodeMirrorEditor.refresh();
 		} 
+	  window.onload = changeFontSize()
+	  window.onload = selectTheme()
+		  
 	</script>
+ 
+ 	
+ 	
 </body>
 </html>
+
+
+
+
+
+
+
