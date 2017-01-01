@@ -7,11 +7,10 @@
 <!-- START SNIPPET: xworkSample -->
 <struts>
 	<constant name="struts.devMode" value="true" />
-	<package name="default" extends="struts-default">
+	<package name="ajax" extends="json-default">
 
 		<action name="print" class="action.PrintAction" method="printcode">
-			<result name="runCodeSuccess">/test.jsp</result>
-			<result name="fail">/test.jsp</result>
+			<result type="json"></result>
 		</action>
 
 		<action name="testRunTime" class="action.TestRunTime">
@@ -19,8 +18,13 @@
 		</action>
 
 	</package>
-
-
+	
+	<!-- <package name="ajax" extends="json-default">
+		<action name="ajaxRequest" class="action.Hello">
+			<result type="json"></result>
+		</action>
+	</package>
+ -->
 </struts>
 
 <!-- END SNIPPET: xworkSample -->

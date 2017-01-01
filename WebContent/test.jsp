@@ -106,6 +106,19 @@
 			});
 			thisQues.remove();
 		}
+		
+		function clickButton() {
+			/* $('body').append('<h1>goood</h1>') */
+			var url="print.action";
+			var params = {
+					code:$('#code').val(),
+					input:$('#inputtext').val()
+			};
+			$.post(url,params,function(data){
+				('#out').append(data.result);
+				/* alert(data.result); //获取数据后渲染页面 */
+			}, 'json');
+		}
 	</script>
 </head>
 <body>
@@ -143,12 +156,9 @@
 	                  				
                   					字体大小:
                   					
-                  					<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
-                  							
+                  					<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">		
                   					</s:select>
 									
-                  					
- 									
  									选择主题: <select onchange="selectTheme()" id="select">
  									 <option selected>seti</option>
  									 <option>eclipse</option>
@@ -177,13 +187,13 @@
 		 		</label>
 			</div>
 		 	<div class="col-md-offset-10 col-md-2">
-				<button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" >Run</button>
+				<button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" onclick="javascript:clickButton();">Run</button>
 		 	</div>
 		</div>
 		
 		<div class="row">
 			<div id="input" class="col-md-8">  
-					<textarea rows="10" cols="100" name="input" class="form-control"></textarea>
+					<textarea rows="10" cols="100" id="inputtext" name="input" class="form-control"></textarea>
 				</div> 
 		</div>
 	 	<div class="row" id="out"></div>
