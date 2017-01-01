@@ -82,33 +82,31 @@
     </style>  
 	
 	
-	<script type="text/javascript">
-		document.getElementById("showlinenum").disabled = "disabled";
-		function addNumber() {
-		    var t = document.getElementById("showlinenum"), s = t.value.split("\n"), len = s.length;
-		    for (var i = 1; i <= len; i++) {
-		        if ("" != s[i - 1]) {
-		            s[i - 1] = i + "." + s[i - 1];
-		        }
-		    }
-		    t.value = s.join("\n");
-		}
-	</script>
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			/* $('#quesBtn').addClass('btn-group-vertical')
-						 .css('width','10%')
-						 .css('position', 'fixed')
-						 .css('height', '42%'); */
+			
 			$('#RunBtn').attr('type', 'button')
 						.fadeTo(0, 0.7)
 						.addClass('btn-default')
 						.click(output);
+			$("#in").change(function(){                 
+		        
+		        $('#input').toggle("normal", function(){  
+		            $('#put').toggleClass('CheckedInLable');  
+		            $('#put').toggleClass('uncheckedInLable');  
+		        });  
+		    });  
 		});
-
+		
+		var flag = true;
 		function output() {
+			if(!flag) {
+				return;
+			}
+			flag = false;
 			$('#out').append(
-				'<div class="container">\
+				'<div class="container" style="margin-top:1%;">\
 			 		<div class="row">\
 				 		<div class="col-sm-12">\
 					 		<div class="panel panel-success  output">\
@@ -131,7 +129,6 @@
 				$(this).find('.no').text(parseInt($(this).find('.no').text(), 10) - 1);
 			});
 			thisQues.remove();
-			--quesCount;
 		}
 	</script>
 	
@@ -256,7 +253,7 @@
 			</div>
 		</div>
 	</nav>
-  
+
  	<div class="container">
  		<div class="row" style="background-color: #e5eecc; margin-top:10%; margin-left:0px; margin-right:0px; ">
 	 		<div class="panel panel-default" style="margin-bottom:0;">
@@ -268,7 +265,7 @@
 			                    <div class="row-fluid">
 	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++:</strong></label>
 	                  				
-                  					<%-- 字体大小:
+                  					字体大小:
                   					
                   					<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
                   							
@@ -280,46 +277,43 @@
  									 <option selected>seti</option>
  									 <option>eclipse</option>
  									 </select>
- 									 F11:全屏 --%>
+ 									 F11:全屏 
  									
 	                   				<input type="hidden" id="bt" name="bt">
 	                   				<div id="setfont"> 
 	                   					<s:textarea theme="simple" name="code" id="code" />
 	                   				</div>
 	                   				
-	                   				<%-- <s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit> --%>
 	                    		</div>
-	                    		<!-- <textarea class="form-control" theme="simple" id="code" name="code" >
-	                    			
-								</textarea> -->
+	                    		
 	                 	 	</div>
-	                  		<%-- <div class="col-sm-6">
-			            		<label><strong style="font-size: 16px;color:#617f10;"> 输入：</strong></label>
-	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
-	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
-	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
-	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
-	                  			<input value="添加序号" type="button" onClick="addNumber();">
-	                	  	</div> --%>
+	                  		
 	                	</div>   
 	   				</s:form>
-	
+					
 	            </div>
 	    	</div>
 	 	</div>
-	 	<div id="out">
-			<button id="RunBtn" type="button" class="btn btn-primary btn-lg"  style="pull-right;">Run</button>
+	 	<div  class="row" style="margin-top:1%">
+		 	<div class="col-md-2">
+				<label id="in" for="in" class="CheckedInLable">
+		 			输入数据：<input id="put" type="checkbox" />
+		 		</label>
+			</div>
+		 	<div class="col-md-offset-10 col-md-2">
+				<button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" >Run</button>
+		 	</div>
 		</div>
+		
+		<div class="row">
+			<div id="input" class="col-md-8">  
+					<textarea rows="10" cols="100"></textarea>
+				</div> 
+		</div>
+	 	<div class="row" id="out"></div>
  	</div>
- 	<!-- <div class="container">
- 		<div class="row">
- 			<div class="col-sm-12">
- 				<div id="out">
-			 		<button id="RunBtn" type="button" class="btn btn-lg">Run</button>
-				</div>
- 			</div>
-	 	</div>
- 	</div> -->
+ 	
+ 	
  	
 	<script>
 		var myTextarea = document.getElementById('code');
@@ -386,36 +380,7 @@
 </body>
 </html>
 
-<%-- <div class="container">\
-			 		<div class="row">\
-				 		<div class="col-sm-12">\
-					 		<div class="panel panel-success  output">\
-							    <div class="panel-heading form-inline">\
-							        <span class="panel-title no"></span><span class="panel-title">. 简答题</span>\
-							        <input type="text" style="width:100px; height:28px; margin-left:20px" class="tag form-control" placeholder="标签"/>\
-							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
-							    </div>\
-							    <div class="panel-body">\
-							    	<label for="content">问题</label><input id="content" type="text" class="content form-control">\
-							        <label for="answer">答案</label>\
-							        <div id="answer" class="input-group">\
-							        	<input type="text" class="answer form-control">\
-							        	<span class="input-group-addon">\
-					                        <select class="score">\
-					                        	<option value="0">0</option>\
-					                            <option value="1">1</option>\
-					                            <option value="2">2 </option>\
-					                            <option value="3">3</option>\
-					                            <option value="4">4</option>\
-					                            <option value="5">5</option>\
-					                        </select>\
-					                    </span>\
-							        </div>\
-							    </div>\
-							</div>\
-						<div>\
-		         	</div>\
-			 	</div> --%>
+
 
 
 

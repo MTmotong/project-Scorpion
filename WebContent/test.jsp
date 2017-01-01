@@ -58,7 +58,55 @@
 		}
 	</script>
 	
-	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			$('#RunBtn').attr('type', 'button')
+						.fadeTo(0, 0.7)
+						.addClass('btn-default')
+						.click(output);
+			$("#in").change(function(){                 
+		        
+		        $('#input').toggle("normal", function(){  
+		            $('#put').toggleClass('CheckedInLable');  
+		            $('#put').toggleClass('uncheckedInLable');  
+		        });  
+		    });  
+		});
+		
+		var flag = true;
+		function output() {
+			if(!flag) {
+				return;
+			}
+			flag = false;
+			$('#out').append(
+				'<div class="container" style="margin-top:1%;">\
+			 		<div class="row">\
+				 		<div class="col-sm-12">\
+					 		<div class="panel panel-success  output">\
+							    <div class="panel-heading form-inline" style="background-color:#e5eecc;">\
+							        <span class="panel-title no"></span><span class="panel-title">输出</span>\
+							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
+							    </div>\
+							    <div class="panel-body">\
+							    	<textarea name="result" class="form-control" style="height:200px;width:100%;border-color:#d6e9c6;"></textarea>\
+							    </div>\
+							</div>\
+						<div>\
+		         	</div>\
+			 	</div>');
+
+		}
+		function popQues(thisItem) {
+			flag = true;
+			var thisQues = $(thisItem).parents('.output');
+			thisQues.nextAll().each(function() {
+				$(this).find('.no').text(parseInt($(this).find('.no').text(), 10) - 1);
+			});
+			thisQues.remove();
+		}
+	</script>
 </head>
 <body>
 	<nav class="navbar  navbar-inverse navbar-fixed-top">
@@ -76,80 +124,80 @@
 			<div id="navbar" class="collapse navbar-collapse"><!-- 给导航栏添加响应式，包裹在带有.collapse、.navbar-collapse  -->
 		          <ul class="nav navbar-nav" id="myTab"><!--nav navbar-nav 导航栏添加链接-->
 			            <li class="active"><a href="#"> C++在线测试</a></li>
-			            <li><a href="compile.jsp"> Project</a></li>
-						<li><a href="compile.jsp"> File</a></li>
 		          </ul>
 		    </div>
 		</div>
 	</nav>
-  
- 	<div class="container">
+
+ 
+	<div class="container">
  		<div class="row" style="background-color: #e5eecc; margin-top:10%; margin-left:0px; margin-right:0px; ">
 	 		<div class="panel panel-default" style="margin-bottom:0;">
 	   			<div class="panel-body" style="background-color: #e5eecc;border-color: #e5eecc;">
 	   		
 	   				<s:form action="print" method="post" theme="simple" autocomplete="off" role="form">
 	   					<div class="row" >
-	                		<div class="col-sm-6" id="LeftPane">
+	                		<div class="col-sm-12">
 			                    <div class="row-fluid">
-	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++代码:</strong></label>
+	                  				<label class="inline" ><strong style="font-size: 16px;color:#617f10;"> C++:</strong></label>
 	                  				
-                  					字体大小:<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
+                  					字体大小:
+                  					
+                  					<s:select onchange="changeFontSize()" name="FontSize" list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize" value="%{FontSize}">
                   							
                   					</s:select>
-                  					
-                  					
-                  					
-                  					
-                  					<!-- 
-                  					
-                  					<input name="" type="button" onclick="changeFontSize('34px')" value="大"/> 
-                  					<input name="" type="button" onclick="changeFontSize('24px')" value="中"/> 
-									<input name="" type="button" onclick="changeFontSize('14px')" value="小"/>
-									 -->
+									
                   					
  									
- 									选择主题: <s:select onchange="selectTheme()" name="Theme" list="#{'seti':'seti','eclipse':'eclipse' }"  id="select" value="%{Theme}">					
- 									 </s:select>
- 									 F11:全屏
- 									 
-	                   				<s:submit theme="simple" class="pull-right inline" value="提交运行"></s:submit>
+ 									选择主题: <select onchange="selectTheme()" id="select">
+ 									 <option selected>seti</option>
+ 									 <option>eclipse</option>
+ 									 </select>
+ 									 F11:全屏 
+ 									
 	                   				<input type="hidden" id="bt" name="bt">
 	                   				<div id="setfont"> 
 	                   					<s:textarea theme="simple" name="code" id="code" />
 	                   				</div>
+	                   				
 	                    		</div>
-	                    		<!-- <textarea class="form-control" theme="simple" id="code" name="code" >
-	                    			
-								</textarea> -->
+	                    		
 	                 	 	</div>
-	                  		<div class="col-sm-6" id="RightPane">
-			            		<label><strong style="font-size: 16px;color:#617f10;"> 输入：</strong></label>
-	        		            <label class="pull-right"><a href="#" style="font-size: 16px;color:#617f10;"> 分享代码</a></label>
-	                  			<s:textarea name="input" class="form-control" style="height:114px;"></s:textarea>
-	                  			<label><strong style="font-size: 16px;color:#617f10;"> 输出：</strong></label>
-	                  			<s:textarea id="showlinenum" name="result" class="form-control" style="height:310px;" readonly="readonly"></s:textarea>
-	                  			<input value="添加序号" type="button" onClick="addNumber();">
-
-	                	  	</div>
+	                  		
 	                	</div>   
 	   				</s:form>
-	
+					
 	            </div>
 	    	</div>
 	 	</div>
+	 	<div  class="row" style="margin-top:1%">
+		 	<div class="col-md-2">
+				<label id="in" for="in" class="CheckedInLable">
+		 			输入数据：<input id="put" type="checkbox" />
+		 		</label>
+			</div>
+		 	<div class="col-md-offset-10 col-md-2">
+				<button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" >Run</button>
+		 	</div>
+		</div>
+		
+		<div class="row">
+			<div id="input" class="col-md-8">  
+					<textarea rows="10" cols="100" name="input" class="form-control"></textarea>
+				</div> 
+		</div>
+	 	<div class="row" id="out"></div>
  	</div>
  	
-      	
+ 	
+ 	
 	<script>
 		var myTextarea = document.getElementById('code');
 		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
 			
-			//光标大小
-			cursorHeight: 1,
 			
 			//高亮类型
-		    mode: "text/x-csrc",
+		    mode: "text/x-c++src",
 		    
 		    //显示行号
 		    lineNumbers: true,
@@ -177,7 +225,6 @@
 		CodeMirrorEditor.setSize('auto','450')
 		
 		
-	//设置主题
 	  var input = document.getElementById("select");
 	  function selectTheme() {
 	    var theme = input.options[input.selectedIndex].textContent;
@@ -197,18 +244,15 @@
 	    input.value = theme; 
 	    selectTheme(); }
 	  });
-	  
-	  //设置字体大小
-	  var size = document.getElementById("selfontsize");
-	  function changeFontSize(){
-			document.getElementById("setfont").style.fontSize=size.value;
-			CodeMirrorEditor.refresh();
-		} 
-	  window.onload = changeFontSize()
-	  window.onload = selectTheme()
-		  
 	</script>
  
+ 	
+ 	<script>
+		function changeFontSize(size){
+			document.getElementById("setfont").style.fontSize=size;
+			
+		} 
+	 </script>
  	
  	
 </body>
