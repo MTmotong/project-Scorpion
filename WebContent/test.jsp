@@ -90,7 +90,7 @@
 							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
 							    </div>\
 							    <div class="panel-body">\
-							    	<textarea name="result" class="form-control" style="height:200px;width:100%;border-color:#d6e9c6;"></textarea>\
+							    	<textarea name="result" id="output" class="form-control" style="height:200px;width:100%;border-color:#d6e9c6;"></textarea>\
 							    </div>\
 							</div>\
 						<div>\
@@ -107,8 +107,10 @@
 			thisQues.remove();
 		}
 		
+		
+/* 		
 		function clickButton() {
-			/* $('body').append('<h1>goood</h1>') */
+			
 			var url="print.action";
 			var params = {
 					code:$('#code').val(),
@@ -116,13 +118,40 @@
 			};
 			$.post(url,params,function(data){
 				('#out').append(data.result);
-				/* alert(data.result); //获取数据后渲染页面 */
+				
 			}, 'json');
 		}
+		 */
+		// belows are ajax functions
+		$(function() {
+			$("#RunBtn").click(function() {
+
+				//提交的参数，name和inch是和struts action中对应的接收变量
+				var params = {
+					code : $("#code").val(),
+					input : $("#inputtext").val()
+				};
+				$.ajax({
+					type : "POST",
+					url : "testAjax.action",
+					data : params,
+					dataType : "text", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
+					success : function(json) {
+						var obj = $.parseJSON(json); //使用这个方法解析json
+						var state_value = obj.result; //result是和action中定义的result变量的get方法对应的
+						document.getElementById("output").innerHTML=state_value;
+					},
+					error : function(json) {
+						alert("json=" + json);
+						return false;
+					}
+				});
+			});
+		});
 	</script>
 </head>
 <body>
-	<nav class="navbar  navbar-inverse navbar-fixed-top">
+	<div class="navbar  navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 		          <button type="button" class="navbar-left navbar-toggle collapsed " data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -140,9 +169,9 @@
 		          </ul>
 		    </div>
 		</div>
-	</nav>
+	</div>
+	
 
- 
 	<div class="container">
  		<div class="row" style="background-color: #e5eecc; margin-top:10%; margin-left:0px; margin-right:0px; ">
 	 		<div class="panel panel-default" style="margin-bottom:0;">
@@ -167,7 +196,7 @@
  									
 	                   				<input type="hidden" id="bt" name="bt">
 	                   				<div id="setfont"> 
-	                   					<s:textarea theme="simple" name="code" id="code" />
+	                   					<s:textarea theme="simple" id="code" name="code"></s:textarea>
 	                   				</div>
 	                   				
 	                    		</div>
@@ -264,7 +293,9 @@
 		} 
 	 </script>
  	
- 	
+ 	<!-- <div>
+	<textarea id="code1" name="code1"></textarea>
+ 	</div> -->
 </body>
 </html>
 

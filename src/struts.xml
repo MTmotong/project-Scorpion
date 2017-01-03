@@ -16,8 +16,20 @@
 		<action name="testRunTime" class="action.TestRunTime">
 			<result name="success">testRunTime.jsp</result>
 		</action>
-
+		
+		<action name="testA" class="test.TryAjax">
+			<result>
+				tryajax.jsp
+			</result>
+		</action>
+		<action name="testAjax" class="test.TryAjax">
+			<result type="json">
+				
+			</result>
+		</action>
 	</package>
+	
+	
 	
 	<!-- <package name="ajax" extends="json-default">
 		<action name="ajaxRequest" class="action.Hello">

@@ -1,6 +1,8 @@
 package action;
 
 import java.io.IOException;
+
+
 import model.Code;
 
 public class PrintAction {
@@ -35,10 +37,13 @@ public class PrintAction {
 	}
 
 	public String printcode() throws IOException, InterruptedException {
-		System.out.println(code);
-		
+
 		System.err.println("input = " + input);
+		System.err.println("code = " + code);
 		
+		return "success";
+		
+		/*
 		cold = new Code();
 		cold.setContent(code);
 		cold.setInput(input);
@@ -63,8 +68,8 @@ public class PrintAction {
 			return "fail";
 		}
 		setResult(cold.getOutput());
-		
 		return "runCodeSuccess";
+		 */
 	}
 
 	public String getResult() {
