@@ -38,6 +38,7 @@ public class PrintAction {
 		System.out.println(code);
 		
 		System.err.println("input = " + input);
+		System.err.println("code = " + code);
 		
 		cold = new Code();
 		cold.setContent(code);
