@@ -159,7 +159,7 @@ public class PrintAction extends ActionSupport{
 		out=null;
 		System.out.println("here");
 		if (ok) return "success";
-		else return "fail";
+		else return "success";
 	}
 
 	public String getResult() {
