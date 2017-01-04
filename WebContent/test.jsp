@@ -9,7 +9,6 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
-<link href="css/navbar.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet"
 	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
