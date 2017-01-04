@@ -17,8 +17,7 @@ public class PrintAction extends ActionSupport{
 	private String input;
 	private String result;
 	private String erromsg;
-	private String FontSize;
-	private String Theme;
+	
 	
 	public String getInput() {
 		return input;
@@ -170,20 +169,6 @@ public class PrintAction extends ActionSupport{
 		this.result = result;
 	}
 
-	public String getFontSize() {
-		return FontSize;
-	}
-
-	public void setFontSize(String fontSize) {
-		FontSize = fontSize;
-	}
-
-	public String getTheme() {
-		return Theme;
-	}
-
-	public void setTheme(String theme) {
-		Theme = theme;
-	}
+	
 
 }
