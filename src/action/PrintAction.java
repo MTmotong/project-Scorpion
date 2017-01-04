@@ -3,9 +3,14 @@ package action;
 import java.io.IOException;
 
 
+
+import com.opensymphony.xwork2.ActionSupport;
+
 import model.Code;
 
-public class PrintAction {
+public class PrintAction extends ActionSupport{
+
+	private static final long serialVersionUID = 8860219269355126057L;
 	Code cold;
 	private String code;
 	private String input;
@@ -39,11 +44,8 @@ public class PrintAction {
 	public String printcode() throws IOException, InterruptedException {
 
 		System.err.println("input = " + input);
-		System.err.println("code = " + code);
+		System.err.println("code = " + code);		
 		
-		return "success";
-		
-		/*
 		cold = new Code();
 		cold.setContent(code);
 		cold.setInput(input);
@@ -53,14 +55,17 @@ public class PrintAction {
 			System.err.println("save file error");
 			return "fail";
 		}
-
+		
+		System.out.println("saved");
+		
 		cold.setCodeStatus("saved");
 
 		if (!cold.compile()) {
 			System.err.println("failed to compile code");
 			return "fail";
 		}
-
+		
+		System.out.println("compiled");
 		cold.setCodeStatus("compiled");
 
 		if (!cold.Run()) {
@@ -68,8 +73,10 @@ public class PrintAction {
 			return "fail";
 		}
 		setResult(cold.getOutput());
-		return "runCodeSuccess";
-		 */
+		
+		System.out.println("here");
+		
+		return "success";
 	}
 
 	public String getResult() {
