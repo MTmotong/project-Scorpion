@@ -1,0 +1,8 @@
+./build/
+./build
+./build/*
+*.class
+./.settings/
+./.settings
+./.settings/*
+
