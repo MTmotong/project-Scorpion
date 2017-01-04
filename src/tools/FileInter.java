@@ -42,4 +42,19 @@ public class FileInter {
 		return true;
 	}
 
+	public boolean delFile(String fileName) {
+		boolean ret = false;
+		File file = new File(fileName);
+		if (file.isFile() && file.exists()) {
+			file.delete();
+			ret = true;
+		}
+		return ret;
+	}
+	
+	public boolean existFile(String fileName) {
+		File file = new File(fileName);
+		return file.isFile() && file.exists();
+	}
+
 }
