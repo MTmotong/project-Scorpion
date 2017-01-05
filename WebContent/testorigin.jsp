@@ -58,54 +58,6 @@
 	src="<%=request.getContextPath()%>/js/anyword-hint.js"></script>
 
 
-<!-- 字体样式 -->
-<style type="text/css">
-	@font-face {
-    font-family: 'ubu';
-    src: url('<%=request.getContextPath()%>/fontfamily/ubuntumono-regular-webfont.woff2') format('woff2'),
-    	url('<%=request.getContextPath()%>/fontfamily/UbuntuMono-Regular.ttf')  format('truetype'),
-         url('<%=request.getContextPath()%>/fontfamily/ubuntumono-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-
-
-	@font-face {
-    font-family: 'bit';
-    src: url('<%=request.getContextPath()%>/fontfamily/bitter-regular-webfont.woff2') format('woff2'),
-    	 url('<%=request.getContextPath()%>/fontfamily/Bitter-Regular.ttf')  format('truetype'),
-         url('<%=request.getContextPath()%>/fontfamily/bitter-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-	@font-face {
-    font-family: 'lob';
-    src: url('<%=request.getContextPath()%>/fontfamily/lobster-regular-webfont.woff2') format('woff2'),
-    	url('<%=request.getContextPath()%>/fontfamily/Lobster-Regular.ttf') format('truetype'),
-         url('<%=request.getContextPath()%>/fontfamily/lobster-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-	
-	@font-face {
-    font-family: 'pac';
-    src: url('<%=request.getContextPath()%>/fontfamily/pacifico-regular-webfont.woff2') format('woff2'),
-    	url('<%=request.getContextPath()%>/fontfamily/Pacifico-Regular.ttf')  format('truetype'),
-         url('<%=request.getContextPath()%>/fontfamily/pacifico-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-	
-
-
-
-</style>
-
 
 
 <script type="text/javascript">
@@ -183,14 +135,10 @@
 					url : "print.action",
 					data : params,
 					dataType : "text", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
-					beforeSend : function() {
-						document.getElementById("RunBtn").innerHTML="Running";
-					},
 					success : function(json) {
 						var obj = $.parseJSON(json); //使用这个方法解析json
 						var state_value = obj.result; //result是和action中定义的result变量的get方法对应的
 						document.getElementById("output").innerHTML=state_value;
-						document.getElementById("RunBtn").innerHTML="Run";
 					},
 					error : function(json) {
 						alert("json=" + json);
@@ -240,24 +188,17 @@
 							<div class="col-sm-12">
 								<div class="row-fluid">
 									<label class="inline"><strong
-										style="font-size: 16px; color: #617f10;"> C++:</strong></label>
-									大小:<select onchange="changeFontSize()"  id="selfontsize" >
-                  							<option value='14px' selected>小</option>
-                  							<option value='24px'>中</option>
-                  							<option value='34px'>大</option>
-                  					</select>
-                  					字体:<select onchange="changeFontFamily()"  id="selfontfamily"  >
-                  							<option  value='ubu' selected>ubu</option>
-                  							<option value='bit'>bit</option>
-                  							<option value='lob'>lob</option>
-                  							<option value='pac'>pac</option>
-                  					</select>
+										style="font-size: 16px; color: #617f10;"> C++:</strong></label> 字体大小:
 
-									主题: <select onchange="selectTheme()" id="select">
+									<s:select onchange="changeFontSize()" name="FontSize"
+										list="#{'14px':'小','24px':'中','34px':'大'}" id="selfontsize"
+										value="%{FontSize}">
+									</s:select>
+
+									选择主题: <select onchange="selectTheme()" id="select">
 										<option selected>seti</option>
 										<option>eclipse</option>
-									</select>
-									 F11:全屏 <input type="hidden" id="bt" name="bt">
+									</select> F11:全屏 <input type="hidden" id="bt" name="bt">
 									<div id="setfont">
 										<s:textarea theme="simple" id="code" name="code"></s:textarea>
 									</div>
@@ -274,7 +215,7 @@
 		</div>
 		<div class="row" style="margin-top: 1%">
 			<div class="col-md-2">
-				<label id="in" for="in" class="CheckedInLable"> 隐藏输入：<input
+				<label id="in" for="in" class="CheckedInLable"> 输入数据：<input
 					id="put" type="checkbox" />
 				</label>
 			</div>
@@ -300,8 +241,6 @@
 		var myTextarea = document.getElementById('code');
 		var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
 			
-			//光标大小
-			cursorHeight: 1,
 			
 			//高亮类型
 		    mode: "text/x-c++src",
@@ -331,7 +270,7 @@
 		//设置宽高
 		CodeMirrorEditor.setSize('auto','450')
 		
-		//设置主题
+		
 	  var input = document.getElementById("select");
 	  function selectTheme() {
 	    var theme = input.options[input.selectedIndex].textContent;
@@ -351,27 +290,14 @@
 	    input.value = theme; 
 	    selectTheme(); }
 	  });
-	
+	</script>
 
 
-	  //设置字体大小
-	  var size = document.getElementById("selfontsize");
-	  function changeFontSize(){
-			document.getElementById("setfont").style.fontSize=size.value;
-			CodeMirrorEditor.refresh();
+	<script>
+		function changeFontSize(size){
+			document.getElementById("setfont").style.fontSize=size;
+			
 		} 
-	  //设置字体
-	  var fontfamily = document.getElementById("selfontfamily");
-	  
-	  function changeFontFamily(){  
-		document.getElementById("setfont").style.fontFamily=fontfamily.value;
-		changeFontSize()
-			  
-	  }
-	  window.onload = changeFontSize();
-	  window.onload = selectTheme();
-	  window.onload = changeFontFamily();
-	  
 	 </script>
 </body>
 </html>

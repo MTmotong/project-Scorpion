@@ -256,7 +256,7 @@ public class Code {
 
 		try {
 			// max execution time
-			if (!p.waitFor(20, TimeUnit.SECONDS)) {
+			if (!p.waitFor(10, TimeUnit.SECONDS)) {
 				p.destroy();
 				if (isWindows()) {
 					runtime.exec("taskkill /F /IM a.exe");
