@@ -152,7 +152,7 @@
 							        <span class="glyphicon glyphicon-remove" onclick="popQues(this)" style="float:right"></span>\
 							    </div>\
 							    <div class="panel-body">\
-							    	<textarea name="result" id="output" class="form-control" style="height:200px;width:100%;border-color:#d6e9c6;"></textarea>\
+							    	<textarea name="result" id="output" readOnly="true" class="form-control" style="height:200px;width:100%;border-color:#d6e9c6;background-color: #FFFFFF;"></textarea>\
 							    </div>\
 							</div>\
 						<div>\
