@@ -171,8 +171,6 @@ public class PrintAction extends ActionSupport{
 		System.out.println("here");
 		
 		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		
 		System.out.println("dir = "+session.get("dir"));
 		
 		if (ok) return "success";
