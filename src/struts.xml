@@ -47,6 +47,12 @@
 			<result type="json"></result>
 		</action>
 		
+		<action name="printfilename" class="action.PrintFileName" method="execute">
+			<result type="json">
+			</result>
+		</action>
+		
+		
 	</package>
 	
 	

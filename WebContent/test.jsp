@@ -151,13 +151,29 @@
 					alert(filenames.length);
 					for (var i = 0; i < filenames.length; i++) {
 						var f = document.createElement('Button');
+						var del = document.createElement('button');
+						/* f.setAttribute("id",filenames[i]); */
+						f.setAttribute("value",filenames[i]);
 						f.innerHTML = filenames[i];
+						f.setAttribute("onclick","clickfile(this.value)");
+						
+						del.setAttribute("value",filenames[i]);
+						del.innerHTML = "delete";
+						del.setAttribute("onclick","deletefile(this.value)");
 						document.getElementById("files").appendChild(f);
+						document.getElementById("files").appendChild(del);
+						$("#files").append("<br>");
+
+						
+						/* $(f).click(function(){
+							alert(this.value);
+						}); */
 					}
 					
 				}
 			});
 			
+					
 			/*
 			//提交的参数，name和inch是和struts action中对应的接收变量
 			var params = {
@@ -184,10 +200,34 @@
 				}
 			});
 			*/
-		})
-		
-		
-		
+		});
+		function deletefile(file){
+			alert(file);
+			
+			
+		}
+		function clickfile(file){
+			alert(file);
+			
+			//document.getElementById("editFile").value=file;
+			$('#editFile').text('当前编译的文件:'+file)
+
+			var params = {
+					filename:file
+			};
+			$.ajax({
+				type : "POST",
+				url :"printfilename.action",
+				data:params,
+				dataType:"text",
+				success:function(){},
+				error : function(json) {
+					alert("json=" + json);
+					return false;
+				}
+			});
+			
+		}
 		var flag = true;
 		function output() {
 			if(!flag) {
@@ -315,11 +355,16 @@
 										<option selected>seti</option>
 										<option>eclipse</option>
 									</select>
-									 F11:全屏 <input type="hidden" id="bt" name="bt">
+									
+									 F11:全屏 <input type="hidden" id="bt" name="bt">	
+									<div id="editFile" style="float:right;">	
+									
+									</div>
 									<div id="setfont">
 										<s:textarea theme="simple" id="code" name="code"></s:textarea>
 									</div>
-
+									
+									
 								</div>
 
 							</div>
