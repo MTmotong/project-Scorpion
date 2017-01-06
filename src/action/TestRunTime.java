@@ -15,7 +15,7 @@ public class TestRunTime implements Action {
 		System.out.println("testRunTime");
 
 //		String cmd = "cmd /c dir";
-		String cmd = "cmd /c g++ -o d:\\tmpcode\\a.exe d:\\tmpcode\\tmp.cpp";
+		String cmd = "cmd /c g++ -o c:\\tmpcode\\a.exe c:\\tmpcode\\tmp.cpp";
 		Runtime runtime = Runtime.getRuntime();
 
 		try {

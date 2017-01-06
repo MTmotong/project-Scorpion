@@ -9,7 +9,7 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
-<link href="css/navbar.css" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet"
 	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -149,11 +149,12 @@
 					var files = obj.files;
 					var filenames = obj.filenames;
 					alert(filenames.length);
-					for (var i = 0; i < filenames.lenth; i++) {
+					for (var i = 0; i < filenames.length; i++) {
 						var f = document.createElement('Button');
 						f.innerHTML = filenames[i];
 						document.getElementById("files").appendChild(f);
 					}
+					
 				}
 			});
 			
@@ -430,7 +431,9 @@
 	  window.onload = changeFontFamily();
 	  
 	 </script>
-	 <div id="files" style="background-color: #0F0; width: 100%; height: 100px">
+	 
+	<div id="files">
+		
 		
 	</div>
 </body>
