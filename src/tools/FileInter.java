@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FileInter {
 	public String readFile(String fileName) throws IOException {
@@ -51,10 +52,70 @@ public class FileInter {
 		}
 		return ret;
 	}
-	
+
 	public boolean existFile(String fileName) {
 		File file = new File(fileName);
 		return file.isFile() && file.exists();
+	}
+
+	public char getSeperator() {
+		String os = System.getProperties().getProperty("os.name");
+
+		if (os.startsWith("win") || os.startsWith("Win"))
+			return '\\';
+		else
+			return '/';
+
+	}
+
+	public ArrayList<String> getAllFiles(String path) {
+		File file = new File(path);
+
+		File[] tmp = file.listFiles();
+
+		ArrayList<String> ret = new ArrayList<String>();
+
+		for (int i = 0; i < tmp.length; i++) {
+			if (tmp[i].isFile() && tmp[i].toString().endsWith(".cpp")) {
+				ret.add(tmp[i].toString());
+				// System.out.println(ret.get(ret.size()-1));
+			}
+		}
+
+		return ret;
+	}
+
+	public ArrayList<String> getAllDirs(String path) {
+		File file = new File(path);
+
+		File[] tmp = file.listFiles();
+
+		ArrayList<String> ret = new ArrayList<String>();
+
+		for (int i = 0; i < tmp.length; i++) {
+			if (tmp[i].isDirectory()) {
+				ret.add(tmp[i].toString());
+				// System.out.println(ret.get(ret.size()-1));
+			}
+		}
+
+		return ret;
+	}
+	
+	public void makeDir(String path) {
+		File f = new File(path);
+		f.mkdir();
+	}
+	
+	
+	public static void main(String[] args) {
+
+		FileInter fi = new FileInter();
+		ArrayList<String> r = fi.getAllDirs("d:\\");
+		for (int i = 0; i < r.size(); i++) {
+			System.out.println(r.get(i));
+		}
+
 	}
 
 }

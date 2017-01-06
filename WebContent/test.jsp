@@ -136,6 +136,57 @@
 		    });  
 		});
 		
+		$(document).ready(function(){
+			
+			var params = {};
+			$.ajax({
+				type : "POST",
+				url : "loadfile",
+				data : params,
+				dataType : "text",
+				success : function(json) {
+					var obj = $.parseJSON(json);
+					var files = obj.files;
+					var filenames = obj.filenames;
+					alert(filenames.length);
+					for (var i = 0; i < filenames.lenth; i++) {
+						var f = document.createElement('Button');
+						f.innerHTML = filenames[i];
+						document.getElementById("files").appendChild(f);
+					}
+				}
+			});
+			
+			/*
+			//提交的参数，name和inch是和struts action中对应的接收变量
+			var params = {
+				code : CodeMirrorEditor.getValue(),
+				input : $("#inputtext").val()
+			};
+			$.ajax({
+				type : "POST",
+				url : "print.action",
+				data : params,
+				dataType : "text", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
+				beforeSend : function() {
+					document.getElementById("RunBtn").innerHTML="Running";
+				},
+				success : function(json) {
+					var obj = $.parseJSON(json); //使用这个方法解析json
+					var state_value = obj.result; //result是和action中定义的result变量的get方法对应的
+					document.getElementById("output").innerHTML=state_value;
+					document.getElementById("RunBtn").innerHTML="Run";
+				},
+				error : function(json) {
+					alert("json=" + json);
+					return false;
+				}
+			});
+			*/
+		})
+		
+		
+		
 		var flag = true;
 		function output() {
 			if(!flag) {
@@ -202,6 +253,8 @@
 	</script>
 </head>
 <body>
+
+
 	<div class="navbar  navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -228,6 +281,10 @@
 
 
 	<div class="container">
+		
+		
+	
+	
 		<div class="row"
 			style="background-color: #e5eecc; margin-top: 10%; margin-left: 0px; margin-right: 0px;">
 			<div class="panel panel-default" style="margin-bottom: 0;">
@@ -373,6 +430,9 @@
 	  window.onload = changeFontFamily();
 	  
 	 </script>
+	 <div id="files" style="background-color: #0F0; width: 100%; height: 100px">
+		
+	</div>
 </body>
 </html>
 

@@ -2,10 +2,14 @@ package action;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.util.Map;
 
 import model.Code;
 
@@ -158,6 +162,12 @@ public class PrintAction extends ActionSupport{
 		out.close();
 		out=null;
 		System.out.println("here");
+		
+		
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		
+		System.out.println("dir = "+session.get("dir"));
+		
 		if (ok) return "success";
 		else return "success";
 	}

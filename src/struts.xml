@@ -22,11 +22,31 @@
 				tryajax.jsp
 			</result>
 		</action>
+		
 		<action name="testAjax" class="test.TryAjax">
 			<result type="json">
 				
 			</result>
 		</action>
+		<action name="load" class="action.LoadDir">
+			<result name="success" type="redirect">
+				/code
+			</result>
+			<result name="fail" type="redirect">
+				/
+			</result>
+		</action>
+		
+		<action name="code">
+			<result>
+				/test.jsp
+			</result>
+		</action>
+		
+		<action name="loadfile" class="action.LoadFiles" method="loadfiles">
+			<result type="json"></result>
+		</action>
+		
 	</package>
 	
 	
