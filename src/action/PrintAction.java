@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Map;
 
+import tools.FileInter;
 import model.Code;
 
 public class PrintAction extends ActionSupport{
@@ -67,6 +68,12 @@ public class PrintAction extends ActionSupport{
 		
 		result = "";
 		erromsg = "";
+		
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		FileInter fi = new FileInter();
+		if (session.containsKey("file")) {
+			fi.writeFile(code, (String)session.get("file"));
+		}
 		
 		// ok = 1
 		// code status = ok

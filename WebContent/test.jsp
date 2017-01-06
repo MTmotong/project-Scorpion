@@ -148,8 +148,9 @@
 					var obj = $.parseJSON(json);
 					var files = obj.files;
 					var filenames = obj.filenames;
+					console.log(typeof(filenames));
 					alert(filenames.length);
-					for (var i = 0; i < filenames.lenth; i++) {
+					for (var i = 0; i < filenames.length; i++) {
 						var f = document.createElement('Button');
 						f.innerHTML = filenames[i];
 						document.getElementById("files").appendChild(f);
@@ -219,11 +220,37 @@
 			});
 			thisQues.remove();
 		}
-		
+		function loadFile() {
+			
+			alert("load file");
+			
+			var params = {};
+			$.ajax({
+				type : "POST",
+				url : "loadfile",
+				data : params,
+				dataType : "text",
+				success : function(json) {
+					var obj = $.parseJSON(json);
+					var files = obj.files;
+					var filenames = obj.filenames;
+					console.log(typeof(filenames));
+					alert(filenames.length);
+					$('#files').empty();
+					for (var i = 0; i < filenames.length; i++) {
+						var f = document.createElement('Button');
+						f.innerHTML = filenames[i];
+						document.getElementById("files").appendChild(f);
+					}
+				}
+			}
+		)}
 		// belows are ajax functions
 		$(function() {
 			$("#RunBtn").click(function() {
-
+				
+				alert("!!!!");
+				
 				//提交的参数，name和inch是和struts action中对应的接收变量
 				var params = {
 					code : CodeMirrorEditor.getValue(),
@@ -250,6 +277,36 @@
 				});
 			});
 		});
+		
+			
+		
+		
+		$(function() {
+			$("#addNewFile").click(function() {
+				alert("!!!!");
+				
+				//提交的参数，name和inch是和struts action中对应的接收变量
+				var params = {
+					newName : $("#newFileName").val()
+				};
+				$.ajax({
+					type : "POST",
+					url : "createNewFile.action",
+					data : params,
+					dataType : "text", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
+					success : function(json) {
+						//load files
+						
+						loadFile();
+						alert("ok");
+					},
+					error : function(json) {
+						alert("error");
+					}
+				});
+			});
+		});
+		
 	</script>
 </head>
 <body>
@@ -430,15 +487,11 @@
 	  window.onload = changeFontFamily();
 	  
 	 </script>
-	 <div id="files" style="background-color: #0F0; width: 100%; height: 100px">
-		
+	 <div>
+		<input id="newFileName" />
+		<button id="addNewFile" type="button"
+					>Create</button>
+	 	<div id="files"></div>
 	</div>
 </body>
 </html>
-
-
-
-
-
-
-

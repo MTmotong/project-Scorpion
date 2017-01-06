@@ -47,6 +47,14 @@
 			<result type="json"></result>
 		</action>
 		
+		<action name="createNewFile" class="action.LoadFiles" method="createFile">
+			<result type="json"></result>
+		</action>
+		<action name="openFile" class="action.CFile" method="openFile">
+			<result type="json"></result>
+		</action>
+		
+		
 	</package>
 	
 	
