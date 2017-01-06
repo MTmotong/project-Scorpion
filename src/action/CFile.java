@@ -33,8 +33,16 @@ public class CFile extends ActionSupport{
 
 	public String openFile() throws Exception {
 		
+		
+		
+		
+		
 		FileInter fi = new FileInter();
 		Map<String, Object> session = ActionContext.getContext().getSession();
+		
+		fileName = (String)session.get("dir")+fi.getSeperator()+fileName;
+		
+		System.err.println("in open file:" + fileName);
 		
 		if (session.containsKey("file"))
 			session.remove("file");

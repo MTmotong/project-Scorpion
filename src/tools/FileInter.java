@@ -111,7 +111,7 @@ public class FileInter {
 	public static void main(String[] args) {
 
 		FileInter fi = new FileInter();
-		ArrayList<String> r = fi.getAllDirs("d:\\");
+		ArrayList<String> r = fi.getAllDirs("c:\\");
 		for (int i = 0; i < r.size(); i++) {
 			System.out.println(r.get(i));
 		}

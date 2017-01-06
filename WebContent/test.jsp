@@ -9,7 +9,7 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
-<link href="css/navbar.css" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet"
 	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -152,12 +152,29 @@
 					alert(filenames.length);
 					for (var i = 0; i < filenames.length; i++) {
 						var f = document.createElement('Button');
+						var del = document.createElement('button');
+						/* f.setAttribute("id",filenames[i]); */
+						f.setAttribute("value",filenames[i]);
 						f.innerHTML = filenames[i];
+						f.setAttribute("onclick","clickfile(this.value)");
+						
+						del.setAttribute("value",filenames[i]);
+						del.innerHTML = "delete";
+						del.setAttribute("onclick","deletefile(this.value)");
 						document.getElementById("files").appendChild(f);
+						document.getElementById("files").appendChild(del);
+						$("#files").append("<br>");
+
+						
+						/* $(f).click(function(){
+							alert(this.value);
+						}); */
 					}
+					
 				}
 			});
 			
+					
 			/*
 			//提交的参数，name和inch是和struts action中对应的接收变量
 			var params = {
@@ -184,9 +201,41 @@
 				}
 			});
 			*/
-		})
-		
-		
+		});
+		function deletefile(file){
+			alert(file);
+		}
+		function clickfile(file){
+			alert(file);
+			
+			document.getElementById("editFile").value=file;
+			
+			$('#editFile').text(file);
+			//$('#editFile').value(file);
+			var params = {
+					fileName:file
+			};
+			$.ajax({
+				type : "POST",
+				url :"openFile",
+				data:params,
+				dataType:"text",
+				success:function(json){
+					alert("openfile1");
+					var obj = $.parseJSON(json);
+					alert("openfile2");
+					var code = obj.code;
+					alert("openfile3");
+					alert(code);
+					CodeMirrorEditor.setValue(code);
+				},
+				error : function(json) {
+					alert("json=" + json);
+					return false;
+				}
+			});
+			
+		}
 		
 		var flag = true;
 		function output() {
@@ -220,10 +269,9 @@
 			});
 			thisQues.remove();
 		}
-		function loadFile() {
-			
-			alert("load file");
-			
+
+		function loadFile(){
+		
 			var params = {};
 			$.ajax({
 				type : "POST",
@@ -236,15 +284,31 @@
 					var filenames = obj.filenames;
 					console.log(typeof(filenames));
 					alert(filenames.length);
+					
 					$('#files').empty();
+					
 					for (var i = 0; i < filenames.length; i++) {
 						var f = document.createElement('Button');
+						var del = document.createElement('button');
+						/* f.setAttribute("id",filenames[i]); */
+						f.setAttribute("value",filenames[i]);
 						f.innerHTML = filenames[i];
+						f.setAttribute("onclick","clickfile(this.value)");
+						
+						del.setAttribute("value",filenames[i]);
+						del.innerHTML = "delete";
+						del.setAttribute("onclick","deletefile(this.value)");
 						document.getElementById("files").appendChild(f);
+						document.getElementById("files").appendChild(del);
+						$("#files").append("<br>");
+						/* $(f).click(function(){
+							alert(this.value);
+						}); */
 					}
 				}
-			}
-		)}
+			})
+		}
+		
 		// belows are ajax functions
 		$(function() {
 			$("#RunBtn").click(function() {
@@ -371,11 +435,26 @@
 										<option selected>seti</option>
 										<option>eclipse</option>
 									</select>
-									 F11:全屏 <input type="hidden" id="bt" name="bt">
+									
+									 F11:全屏 <input type="hidden" id="bt" name="bt">	
+									 <button onclick = "xxx()">save</button>
+										
+										<script type="text/javascript">
+											function xxx() {
+												var u = $('#editFile').text();
+												alert(u);
+											}									
+										</script>
+									<div style="float:right;">
+										当前编译的文件: <div id="editFile" ></div>	
+									</div>
+									
+									
 									<div id="setfont">
 										<s:textarea theme="simple" id="code" name="code"></s:textarea>
 									</div>
-
+									
+									
 								</div>
 
 							</div>
