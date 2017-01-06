@@ -210,7 +210,7 @@
 			alert(file);
 			
 			//document.getElementById("editFile").value=file;
-			$('#editFile').text('当前编译的文件:'+file)
+			$('#editFile').text('当前编译的文件:'+file);
 
 			var params = {
 					filename:file
@@ -228,6 +228,7 @@
 			});
 			
 		}
+		
 		var flag = true;
 		function output() {
 			if(!flag) {
@@ -357,6 +358,13 @@
 									</select>
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
+									 <button onclick = "xxx()">save</button>
+									<script type="text/javascript">
+										function xxx() {
+											var u = document.getElementById("editFile").getAttribute('value');
+											alert(u);
+										}									
+									</script>
 									<div id="editFile" style="float:right;">	
 									
 									</div>
