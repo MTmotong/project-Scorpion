@@ -209,9 +209,10 @@
 		function clickfile(file){
 			alert(file);
 			
-			//document.getElementById("editFile").value=file;
-			$('#editFile').text('当前编译的文件:'+file);
-
+			document.getElementById("editFile").value=file;
+			
+			$('#editFile').text(file);
+			//$('#editFile').value(file);
 			var params = {
 					filename:file
 			};
@@ -359,15 +360,18 @@
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
 									 <button onclick = "xxx()">save</button>
-									<script type="text/javascript">
-										function xxx() {
-											var u = document.getElementById("editFile").getAttribute('value');
-											alert(u);
-										}									
-									</script>
-									<div id="editFile" style="float:right;">	
-									
+										
+										<script type="text/javascript">
+											function xxx() {
+												var u = $('#editFile').text();
+												alert(u);
+											}									
+										</script>
+									<div style="float:right;">
+										当前编译的文件: <div id="editFile" ></div>	
 									</div>
+									
+									
 									<div id="setfont">
 										<s:textarea theme="simple" id="code" name="code"></s:textarea>
 									</div>
