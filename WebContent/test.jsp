@@ -140,7 +140,7 @@
 		});
 		
 		
-		  $(document).ready(loadFile());
+	/* 	  $(document).ready(loadFile()); */
 					
 			/*
 			//提交的参数，name和inch是和struts action中对应的接收变量
@@ -191,8 +191,8 @@
 		function clickfile(file){
 			alert(file);
 			
-			document.getElementById("editFile").value=file;
-			
+			//document.getElementById("editFile").value=file;
+			$('#editNow').text('当前编译的文件:'+file);
 			$('#editFile').text(file);
 			//$('#editFile').value(file);
 			var params = {
@@ -399,7 +399,8 @@
 					<s:form action="print" method="post" theme="simple"
 						autocomplete="off" role="form">
 						<div class="row">
-							<div class="col-sm-12">
+							
+							<div class="col-sm-10">
 								<div class="row-fluid">
 									<label class="inline"><strong
 										style="font-size: 16px; color: #617f10;"> C++:</strong></label>
@@ -422,8 +423,7 @@
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
 									 
-									<div style="float:right;">
-										当前编译的文件: <div id="editFile" ></div>	
+									<div id="editNow" style="float:right;">
 									</div>
 									
 									
@@ -435,7 +435,17 @@
 								</div>
 
 							</div>
-
+							
+							<div class="col-sm-2">
+								<h4>我的文件</h4>
+								<input id="newFileName" style="width:80px;"/>
+								
+								<button id="addNewFile" type="button"
+											>+</button>
+								
+							 	<div id="files"></div>
+							</div>
+							
 						</div>
 					</s:form>
 
@@ -449,9 +459,12 @@
 				</label>
 			</div>
 			<div class="col-md-offset-10 col-md-2">
-				<button id="RunBtn" type="button" class="btn btn-primary btn-lg"
-					style="float: right">Run</button>
-				<button onclick = "xxx()">save</button>
+				<div class="btn-group" style="float: right;">
+					<button onclick = "xxx()" type="button" class="btn btn-success btn-lg">save</button>
+					<button id="RunBtn" type="button" class="btn btn-primary btn-lg">Run</button>
+					
+				</div>
+				
 										
 				<script type="text/javascript">
 					function xxx() {
@@ -471,7 +484,7 @@
 							error : function() {
 								alert("save error");
 							}
-						})
+						});
 					}									
 				</script>
 			</div>
@@ -486,7 +499,50 @@
 		<div class="row" id="out"></div>
 	</div>
 
-
+	
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" 
+							aria-hidden="true">×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						Welcome to Scorpion
+					</h4>
+				</div>
+				<div class="modal-body">
+					<!-- <form action="load.action" method="post">			
+						<div class="form-group">
+							<p>文件名</p>
+							<input type="text" class="form-control" label="Choose dir" placeholder="choose dir if you want" name="dir">
+						</div>
+						<div class="form-group">
+							<p>密码</p>
+							<input type="password" class="form-control" label="pass word" placeholder="passwd for this dir" name="passwd">
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary btn-block" type="submit">提交</button>
+						</div>
+					</form> -->
+					<form action="load.action" method="post">
+						<s:textfield name="dir" label="Choose dir" />
+						<s:password name="passwd" label="pass word"/>
+						<s:submit />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	$(function () { $('#myModal').modal({
+			keyboard: true
+		});
+	});
+	</script>
+	
+	
 
 	<script>
 		var myTextarea = document.getElementById('code');
@@ -568,13 +624,13 @@
 	  window.onload = changeFontFamily();
 	  
 	 </script>
-	 <div>
+	 <!-- <div>
 		<input id="newFileName" style="width:80px;"/>
 		
 		<button id="addNewFile" type="button"
 					>+</button>
 		<h4>我的文件</h4>
 	 	<div id="files"></div>
-	</div>
+	</div> -->
 </body>
 </html>
