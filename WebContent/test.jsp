@@ -183,8 +183,12 @@
 				success : function() {
 					alert("del ok");
 					loadFile();
+				},
+				error:function(){
+					alert("error");
 				}
-			})
+			
+			});
 			
 			
 		}
@@ -292,6 +296,11 @@
 				}
 			})
 		}
+		
+		
+		
+		
+		
 		
 		// belows are ajax functions
 		$(function() {
@@ -505,32 +514,26 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" 
-							aria-hidden="true">×
-					</button>
+					
 					<h4 class="modal-title" id="myModalLabel">
 						Welcome to Scorpion
 					</h4>
 				</div>
 				<div class="modal-body">
-					<!-- <form action="load.action" method="post">			
+					 <form  method="post">			
 						<div class="form-group">
 							<p>文件名</p>
-							<input type="text" class="form-control" label="Choose dir" placeholder="choose dir if you want" name="dir">
+							<input type="text" class="form-control" label="Choose dir" placeholder="choose dir if you want" id="dir">
 						</div>
 						<div class="form-group">
 							<p>密码</p>
-							<input type="password" class="form-control" label="pass word" placeholder="passwd for this dir" name="passwd">
+							<input type="password" class="form-control" label="pass word" placeholder="passwd for this dir" id="passwd">
 						</div>
 						<div class="form-group">
-							<button type="button" class="btn btn-primary btn-block" type="submit">提交</button>
+							<button type="button" class="btn btn-primary btn-block" type="submit" onclick="signin()">提交</button>
 						</div>
-					</form> -->
-					<form action="load.action" method="post">
-						<s:textfield name="dir" label="Choose dir" />
-						<s:password name="passwd" label="pass word"/>
-						<s:submit />
-					</form>
+					</form> 
+					
 				</div>
 			</div>
 		</div>
@@ -540,6 +543,30 @@
 			keyboard: true
 		});
 	});
+	
+	function signin(){
+		var params = {
+				dir : $("#dir").val(),
+				passwd : $("#passwd").val()
+			};
+		
+		$.ajax({
+			type : "POST",
+			url : "load",
+			data : params,
+			dataType : "text",
+			success:function(json){
+				 loadFile();
+				 $('#myModal').modal("hide");
+				 
+				 
+			},
+			error : function() {
+				alert("error");
+			},
+			
+		});
+	}
 	</script>
 	
 	

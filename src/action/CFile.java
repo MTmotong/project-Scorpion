@@ -65,7 +65,7 @@ public class CFile extends ActionSupport {
 
 		fileName = (String) session.get("dir") + fi.getSeperator() + fileName;
 
-		System.err.println("in del file:" + fileName);
+		System.out.println("in del file:" + fileName);
 		fi.delFile(fileName);
 		return "success";
 	}

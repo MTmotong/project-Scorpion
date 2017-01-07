@@ -29,12 +29,8 @@
 			</result>
 		</action>
 		<action name="load" class="action.LoadDir">
-			<result name="success" type="redirect">
-				/code
-			</result>
-			<result name="fail" type="redirect">
-				/
-			</result>
+			<result type="json"></result>
+			
 		</action>
 		
 		<action name="code">
