@@ -19,6 +19,9 @@
 <script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
 
+<!-- 文件按钮样式 -->
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/filecss.css">
 
 
 <!--代码高亮  -->
@@ -136,44 +139,8 @@
 		    });  
 		});
 		
-		$(document).ready(function(){
-			
-			var params = {};
-			$.ajax({
-				type : "POST",
-				url : "loadfile",
-				data : params,
-				dataType : "text",
-				success : function(json) {
-					var obj = $.parseJSON(json);
-					var files = obj.files;
-					var filenames = obj.filenames;
-					console.log(typeof(filenames));
-					alert(filenames.length);
-					for (var i = 0; i < filenames.length; i++) {
-						var f = document.createElement('Button');
-						var del = document.createElement('button');
-						/* f.setAttribute("id",filenames[i]); */
-						f.setAttribute("value",filenames[i]);
-						f.innerHTML = filenames[i];
-						f.setAttribute("onclick","clickfile(this.value)");
-						
-						del.setAttribute("value",filenames[i]);
-						del.innerHTML = "delete";
-						del.setAttribute("onclick","deletefile(this.value)");
-						document.getElementById("files").appendChild(f);
-						document.getElementById("files").appendChild(del);
-						$("#files").append("<br>");
-
-						
-						/* $(f).click(function(){
-							alert(this.value);
-						}); */
-					}
-					
-				}
-			});
-			
+		
+		  $(document).ready(loadFile());
 					
 			/*
 			//提交的参数，name和inch是和struts action中对应的接收变量
@@ -201,7 +168,7 @@
 				}
 			});
 			*/
-		});
+	
 		function deletefile(file){
 			alert("del file "+file);
 			
@@ -237,12 +204,11 @@
 				data:params,
 				dataType:"text",
 				success:function(json){
-					alert("openfile1");
+					
 					var obj = $.parseJSON(json);
-					alert("openfile2");
+					
 					var code = obj.code;
-					alert("openfile3");
-					alert(code);
+					
 					CodeMirrorEditor.setValue(code);
 				},
 				error : function(json) {
@@ -304,15 +270,17 @@
 					$('#files').empty();
 					
 					for (var i = 0; i < filenames.length; i++) {
-						var f = document.createElement('Button');
+						var f = document.createElement('a');
 						var del = document.createElement('button');
 						/* f.setAttribute("id",filenames[i]); */
-						f.setAttribute("value",filenames[i]);
-						f.innerHTML = filenames[i];
-						f.setAttribute("onclick","clickfile(this.value)");
 						
+						f.setAttribute("class","filename");
+						f.innerHTML = filenames[i];
+						f.setAttribute("onclick","clickfile(this.innerText)");
+						
+						del.setAttribute("class","del");
 						del.setAttribute("value",filenames[i]);
-						del.innerHTML = "delete";
+						del.innerHTML = "X";
 						del.setAttribute("onclick","deletefile(this.value)");
 						document.getElementById("files").appendChild(f);
 						document.getElementById("files").appendChild(del);
@@ -329,7 +297,7 @@
 		$(function() {
 			$("#RunBtn").click(function() {
 				
-				alert("!!!!");
+				
 				
 				//提交的参数，name和inch是和struts action中对应的接收变量
 				var params = {
@@ -592,15 +560,20 @@
 		changeFontSize()
 			  
 	  }
+	  
+	
+	  
 	  window.onload = changeFontSize();
-	  window.onload = selectTheme();
+	  
 	  window.onload = changeFontFamily();
 	  
 	 </script>
 	 <div>
-		<input id="newFileName" />
+		<input id="newFileName" style="width:80px;"/>
+		
 		<button id="addNewFile" type="button"
-					>Create</button>
+					>+</button>
+		<h4>我的文件</h4>
 	 	<div id="files"></div>
 	</div>
 </body>

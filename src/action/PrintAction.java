@@ -25,6 +25,8 @@ public class PrintAction extends ActionSupport{
 	private String FontSize;
 	private String Theme;
 	
+	public static boolean lock = false;
+	
 	public String getInput() {
 		return input;
 	}
@@ -93,6 +95,7 @@ public class PrintAction extends ActionSupport{
 		FileLock flout = null;
 		
 		
+		/*
 		while(true) {
 			flout = fcout.tryLock();
 			
@@ -103,6 +106,15 @@ public class PrintAction extends ActionSupport{
 			Thread.sleep(300);
 			
 		}
+		*/
+		while(lock){
+			System.err.println("waiting other process to finish!!");
+			
+		}
+		
+		
+		lock = true;
+		
 		
 		/*while(true) {
 			try {
@@ -164,7 +176,11 @@ public class PrintAction extends ActionSupport{
 		setResult(cold.getOutput());
 		cold.clearFile();
 		
-		flout.release();
+		//flout.release();
+		
+		lock = false;
+		
+		
 		fcout.close();
 		out.close();
 		out=null;

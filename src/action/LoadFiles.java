@@ -66,7 +66,7 @@ public class LoadFiles extends ActionSupport {
 		String dir = (String) session.get("dir");
 		
 		String newFile = dir +  fi.getSeperator() + newName + ".cpp";
-		
+		System.out.println(newFile);
 		if (fi.existFile(newFile)) {
 			return "fail";
 		}
