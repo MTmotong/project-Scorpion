@@ -203,7 +203,23 @@
 			*/
 		});
 		function deletefile(file){
-			alert(file);
+			alert("del file "+file);
+			
+			var params = {
+				fileName : file
+			};
+			$.ajax({
+				type : "POST",
+				url : "delfile",
+				data : params,
+				dataType : "text",
+				success : function() {
+					alert("del ok");
+					loadFile();
+				}
+			})
+			
+			
 		}
 		function clickfile(file){
 			alert(file);
@@ -437,14 +453,7 @@
 									</select>
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
-									 <button onclick = "xxx()">save</button>
-										
-										<script type="text/javascript">
-											function xxx() {
-												var u = $('#editFile').text();
-												alert(u);
-											}									
-										</script>
+									 
 									<div style="float:right;">
 										当前编译的文件: <div id="editFile" ></div>	
 									</div>
@@ -474,7 +483,29 @@
 			<div class="col-md-offset-10 col-md-2">
 				<button id="RunBtn" type="button" class="btn btn-primary btn-lg"
 					style="float: right">Run</button>
-				<!-- <button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" onclick="javascript:clickButton();">Run</button> -->
+				<button onclick = "xxx()">save</button>
+										
+				<script type="text/javascript">
+					function xxx() {
+						
+						var params = {
+							code : CodeMirrorEditor.getValue(),
+							fileName : $('#editFile').text()
+						};
+						$.ajax({
+							type : "POST",
+							url : "savefile",
+							data : params,
+							dataType : "text",
+							success : function(json) {
+								alert("save ok");
+							},
+							error : function() {
+								alert("save error");
+							}
+						})
+					}									
+				</script>
 			</div>
 		</div>
 

@@ -57,8 +57,15 @@
 			<result type="json">
 			</result>
 		</action>
-		
-		
+		<action name="savefile" class="action.CFile" method="saveFile">
+			<result type="json">
+			</result>
+		</action>
+		<action name="delfile" class="action.CFile" method="delFile">
+			<result type="json">
+			</result>
+		</action>
+
 	</package>
 	
 	
