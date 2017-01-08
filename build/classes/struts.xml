@@ -29,12 +29,8 @@
 			</result>
 		</action>
 		<action name="load" class="action.LoadDir">
-			<result name="success" type="redirect">
-				/code
-			</result>
-			<result name="fail" type="redirect">
-				/
-			</result>
+			<result type="json"></result>
+			
 		</action>
 		
 		<action name="code">
@@ -46,13 +42,26 @@
 		<action name="loadfile" class="action.LoadFiles" method="loadfiles">
 			<result type="json"></result>
 		</action>
-		
+
+		<action name="createNewFile" class="action.LoadFiles" method="createFile">
+			<result type="json"></result>
+		</action>
+		<action name="openFile" class="action.CFile" method="openFile">
+			<result type="json"></result>
+		</action>
 		<action name="printfilename" class="action.PrintFileName" method="execute">
 			<result type="json">
 			</result>
 		</action>
-		
-		
+		<action name="savefile" class="action.CFile" method="saveFile">
+			<result type="json">
+			</result>
+		</action>
+		<action name="delfile" class="action.CFile" method="delFile">
+			<result type="json">
+			</result>
+		</action>
+
 	</package>
 	
 	

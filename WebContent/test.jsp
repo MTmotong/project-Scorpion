@@ -19,6 +19,9 @@
 <script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
 
+<!-- 文件按钮样式 -->
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/filecss.css">
 
 
 <!--代码高亮  -->
@@ -136,43 +139,8 @@
 		    });  
 		});
 		
-		$(document).ready(function(){
-			
-			var params = {};
-			$.ajax({
-				type : "POST",
-				url : "loadfile",
-				data : params,
-				dataType : "text",
-				success : function(json) {
-					var obj = $.parseJSON(json);
-					var files = obj.files;
-					var filenames = obj.filenames;
-					alert(filenames.length);
-					for (var i = 0; i < filenames.length; i++) {
-						var f = document.createElement('Button');
-						var del = document.createElement('button');
-						/* f.setAttribute("id",filenames[i]); */
-						f.setAttribute("value",filenames[i]);
-						f.innerHTML = filenames[i];
-						f.setAttribute("onclick","clickfile(this.value)");
-						
-						del.setAttribute("value",filenames[i]);
-						del.innerHTML = "delete";
-						del.setAttribute("onclick","deletefile(this.value)");
-						document.getElementById("files").appendChild(f);
-						document.getElementById("files").appendChild(del);
-						$("#files").append("<br>");
-
-						
-						/* $(f).click(function(){
-							alert(this.value);
-						}); */
-					}
-					
-				}
-			});
-			
+		
+	/* 	  $(document).ready(loadFile()); */
 					
 			/*
 			//提交的参数，name和inch是和struts action中对应的接收变量
@@ -200,28 +168,53 @@
 				}
 			});
 			*/
-		});
+	
 		function deletefile(file){
-			alert(file);
+			alert("del file "+file);
+			
+			var params = {
+				fileName : file
+			};
+			$.ajax({
+				type : "POST",
+				url : "delfile",
+				data : params,
+				dataType : "text",
+				success : function() {
+					alert("del ok");
+					loadFile();
+				},
+				error:function(){
+					alert("error");
+				}
+			
+			});
 			
 			
 		}
 		function clickfile(file){
 			alert(file);
 			
-			document.getElementById("editFile").value=file;
-			
+			//document.getElementById("editFile").value=file;
+			$('#editNow').text('当前编译的文件:'+file);
 			$('#editFile').text(file);
 			//$('#editFile').value(file);
 			var params = {
-					filename:file
+					fileName:file
 			};
 			$.ajax({
 				type : "POST",
-				url :"printfilename.action",
+				url :"openFile",
 				data:params,
 				dataType:"text",
-				success:function(){},
+				success:function(json){
+					
+					var obj = $.parseJSON(json);
+					
+					var code = obj.code;
+					
+					CodeMirrorEditor.setValue(code);
+				},
 				error : function(json) {
 					alert("json=" + json);
 					return false;
@@ -262,11 +255,59 @@
 			});
 			thisQues.remove();
 		}
+
+		function loadFile(){
+		
+			var params = {};
+			$.ajax({
+				type : "POST",
+				url : "loadfile",
+				data : params,
+				dataType : "text",
+				success : function(json) {
+					var obj = $.parseJSON(json);
+					var files = obj.files;
+					var filenames = obj.filenames;
+					console.log(typeof(filenames));
+					alert(filenames.length);
+					
+					$('#files').empty();
+					
+					for (var i = 0; i < filenames.length; i++) {
+						var f = document.createElement('a');
+						var del = document.createElement('button');
+						/* f.setAttribute("id",filenames[i]); */
+						
+						f.setAttribute("class","filename");
+						f.innerHTML = filenames[i];
+						f.setAttribute("onclick","clickfile(this.innerText)");
+						
+						del.setAttribute("class","del");
+						del.setAttribute("value",filenames[i]);
+						del.innerHTML = "X";
+						del.setAttribute("onclick","deletefile(this.value)");
+						document.getElementById("files").appendChild(f);
+						document.getElementById("files").appendChild(del);
+						$("#files").append("<br>");
+						/* $(f).click(function(){
+							alert(this.value);
+						}); */
+					}
+				}
+			})
+		}
+		
+		
+		
+		
+		
 		
 		// belows are ajax functions
 		$(function() {
 			$("#RunBtn").click(function() {
-
+				
+				
+				
 				//提交的参数，name和inch是和struts action中对应的接收变量
 				var params = {
 					code : CodeMirrorEditor.getValue(),
@@ -293,6 +334,36 @@
 				});
 			});
 		});
+		
+			
+		
+		
+		$(function() {
+			$("#addNewFile").click(function() {
+				alert("!!!!");
+				
+				//提交的参数，name和inch是和struts action中对应的接收变量
+				var params = {
+					newName : $("#newFileName").val()
+				};
+				$.ajax({
+					type : "POST",
+					url : "createNewFile.action",
+					data : params,
+					dataType : "text", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
+					success : function(json) {
+						//load files
+						
+						loadFile();
+						alert("ok");
+					},
+					error : function(json) {
+						alert("error");
+					}
+				});
+			});
+		});
+		
 	</script>
 </head>
 <body>
@@ -337,7 +408,8 @@
 					<s:form action="print" method="post" theme="simple"
 						autocomplete="off" role="form">
 						<div class="row">
-							<div class="col-sm-12">
+							
+							<div class="col-sm-10">
 								<div class="row-fluid">
 									<label class="inline"><strong
 										style="font-size: 16px; color: #617f10;"> C++:</strong></label>
@@ -359,16 +431,8 @@
 									</select>
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
-									 <button onclick = "xxx()">save</button>
-										
-										<script type="text/javascript">
-											function xxx() {
-												var u = $('#editFile').text();
-												alert(u);
-											}									
-										</script>
-									<div style="float:right;">
-										当前编译的文件: <div id="editFile" ></div>	
+									 
+									<div id="editNow" style="float:right;">
 									</div>
 									
 									
@@ -380,7 +444,17 @@
 								</div>
 
 							</div>
-
+							
+							<div class="col-sm-2">
+								<h4>我的文件</h4>
+								<input id="newFileName" style="width:80px;"/>
+								
+								<button id="addNewFile" type="button"
+											>+</button>
+								
+							 	<div id="files"></div>
+							</div>
+							
 						</div>
 					</s:form>
 
@@ -394,9 +468,34 @@
 				</label>
 			</div>
 			<div class="col-md-offset-10 col-md-2">
-				<button id="RunBtn" type="button" class="btn btn-primary btn-lg"
-					style="float: right">Run</button>
-				<!-- <button id="RunBtn" type="button" class="btn btn-primary btn-lg" style="float:right" onclick="javascript:clickButton();">Run</button> -->
+				<div class="btn-group" style="float: right;">
+					<button onclick = "xxx()" type="button" class="btn btn-success btn-lg">save</button>
+					<button id="RunBtn" type="button" class="btn btn-primary btn-lg">Run</button>
+					
+				</div>
+				
+										
+				<script type="text/javascript">
+					function xxx() {
+						
+						var params = {
+							code : CodeMirrorEditor.getValue(),
+							fileName : $('#editFile').text()
+						};
+						$.ajax({
+							type : "POST",
+							url : "savefile",
+							data : params,
+							dataType : "text",
+							success : function(json) {
+								alert("save ok");
+							},
+							error : function() {
+								alert("save error");
+							}
+						});
+					}									
+				</script>
 			</div>
 		</div>
 
@@ -409,7 +508,68 @@
 		<div class="row" id="out"></div>
 	</div>
 
-
+	
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					
+					<h4 class="modal-title" id="myModalLabel">
+						Welcome to Scorpion
+					</h4>
+				</div>
+				<div class="modal-body">
+					 <form  method="post">			
+						<div class="form-group">
+							<p>文件名</p>
+							<input type="text" class="form-control" label="Choose dir" placeholder="choose dir if you want" id="dir">
+						</div>
+						<div class="form-group">
+							<p>密码</p>
+							<input type="password" class="form-control" label="pass word" placeholder="passwd for this dir" id="passwd">
+						</div>
+						<div class="form-group">
+							<button type="button" class="btn btn-primary btn-block" type="submit" onclick="signin()">提交</button>
+						</div>
+					</form> 
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	$(function () { $('#myModal').modal({
+			keyboard: true
+		});
+	});
+	
+	function signin(){
+		var params = {
+				dir : $("#dir").val(),
+				passwd : $("#passwd").val()
+			};
+		
+		$.ajax({
+			type : "POST",
+			url : "load",
+			data : params,
+			dataType : "text",
+			success:function(json){
+				 loadFile();
+				 $('#myModal').modal("hide");
+				 
+				 
+			},
+			error : function() {
+				alert("error");
+			},
+			
+		});
+	}
+	</script>
+	
+	
 
 	<script>
 		var myTextarea = document.getElementById('code');
@@ -483,22 +643,21 @@
 		changeFontSize()
 			  
 	  }
+	  
+	
+	  
 	  window.onload = changeFontSize();
-	  window.onload = selectTheme();
+	  
 	  window.onload = changeFontFamily();
 	  
 	 </script>
-	 
-	<div id="files">
+	 <!-- <div>
+		<input id="newFileName" style="width:80px;"/>
 		
-		
-	</div>
+		<button id="addNewFile" type="button"
+					>+</button>
+		<h4>我的文件</h4>
+	 	<div id="files"></div>
+	</div> -->
 </body>
 </html>
-
-
-
-
-
-
-

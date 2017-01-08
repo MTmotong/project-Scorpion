@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Map;
 
+import tools.FileInter;
 import model.Code;
 
 public class PrintAction extends ActionSupport{
@@ -23,6 +24,8 @@ public class PrintAction extends ActionSupport{
 	private String erromsg;
 	private String FontSize;
 	private String Theme;
+	
+	public static boolean lock = false;
 	
 	public String getInput() {
 		return input;
@@ -68,6 +71,12 @@ public class PrintAction extends ActionSupport{
 		result = "";
 		erromsg = "";
 		
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		FileInter fi = new FileInter();
+		if (session.containsKey("file")) {
+			fi.writeFile(code, (String)session.get("file"));
+		}
+		
 		// ok = 1
 		// code status = ok
 		boolean ok = true;
@@ -86,6 +95,7 @@ public class PrintAction extends ActionSupport{
 		FileLock flout = null;
 		
 		
+		/*
 		while(true) {
 			flout = fcout.tryLock();
 			
@@ -96,6 +106,15 @@ public class PrintAction extends ActionSupport{
 			Thread.sleep(300);
 			
 		}
+		*/
+		while(lock){
+			System.err.println("waiting other process to finish!!");
+			
+		}
+		
+		
+		lock = true;
+		
 		
 		/*while(true) {
 			try {
@@ -157,14 +176,16 @@ public class PrintAction extends ActionSupport{
 		setResult(cold.getOutput());
 		cold.clearFile();
 		
-		flout.release();
+		//flout.release();
+		
+		lock = false;
+		
+		
 		fcout.close();
 		out.close();
 		out=null;
 		System.out.println("here");
 		
-		
-		Map<String, Object> session = ActionContext.getContext().getSession();
 		
 		System.out.println("dir = "+session.get("dir"));
 		

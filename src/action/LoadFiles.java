@@ -12,9 +12,20 @@ import com.opensymphony.xwork2.ActionSupport;
 public class LoadFiles extends ActionSupport {
 
 	private static final long serialVersionUID = 6016237926432124034L;
-	ArrayList<String> files;
-	ArrayList<String> filenames;
+	private ArrayList<String> files;
+	private ArrayList<String> filenames;
+	private String newName;
 	
+	public String getNewName() {
+		return newName;
+	}
+
+	
+	
+	public void setNewName(String newName) {
+		this.newName = newName;
+	}
+
 	public ArrayList<String> getFiles() {
 		return files;
 	}
@@ -43,5 +54,24 @@ public class LoadFiles extends ActionSupport {
 		
 		return "success";
 	}
-
+	
+	public String createFile() throws Exception {
+		
+		if (newName == null || newName.length() < 1) {
+			return "fail";
+		}
+		
+		FileInter fi = new FileInter();
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String dir = (String) session.get("dir");
+		
+		String newFile = dir +  fi.getSeperator() + newName + ".cpp";
+		System.out.println(newFile);
+		if (fi.existFile(newFile)) {
+			return "fail";
+		}
+		fi.writeFile("", newFile);
+		return "success";
+	}
+	
 }

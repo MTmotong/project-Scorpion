@@ -33,7 +33,7 @@ public class Code {
 		// get runtime operating system name
 		os = System.getProperties().getProperty("os.name");
 		if (os.startsWith("win") || os.startsWith("Win")) {
-			path = "c:\\tmpcode\\";
+			path = "d:\\tmpcode\\";
 		} else {
 			path = "/home/py/tmpcode/";
 		}
