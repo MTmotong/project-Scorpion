@@ -170,7 +170,8 @@
 			*/
 	
 		function deletefile(file){
-			alert("del file "+file);
+			"use strict"
+			//alert("del file "+file);
 			
 			var params = {
 				fileName : file
@@ -181,22 +182,22 @@
 				data : params,
 				dataType : "text",
 				success : function() {
-					alert("del ok");
+					//alert("del ok-1");
 					loadFile();
+					//alert("del ok-2");
 				},
 				error:function(){
 					alert("error");
 				}
 			
 			});
-			
-			
+
 		}
 		function clickfile(file){
-			alert(file);
+			//alert(file);
 			
 			//document.getElementById("editFile").value=file;
-			$('#editNow').text('当前编译的文件:'+file);
+			$('#editNow').text(file);
 			$('#editFile').text(file);
 			//$('#editFile').value(file);
 			var params = {
@@ -255,7 +256,8 @@
 			});
 			thisQues.remove();
 		}
-
+		
+		
 		function loadFile(){
 		
 			var params = {};
@@ -269,7 +271,7 @@
 					var files = obj.files;
 					var filenames = obj.filenames;
 					console.log(typeof(filenames));
-					alert(filenames.length);
+					//alert(filenames.length);
 					
 					$('#files').empty();
 					
@@ -282,6 +284,7 @@
 						f.innerHTML = filenames[i];
 						f.setAttribute("onclick","clickfile(this.innerText)");
 						
+						del.setAttribute("type", "button");
 						del.setAttribute("class","del");
 						del.setAttribute("value",filenames[i]);
 						del.innerHTML = "X";
@@ -306,7 +309,7 @@
 		$(function() {
 			$("#RunBtn").click(function() {
 				
-				
+				//alert("!!!????");
 				
 				//提交的参数，name和inch是和struts action中对应的接收变量
 				var params = {
@@ -340,7 +343,7 @@
 		
 		$(function() {
 			$("#addNewFile").click(function() {
-				alert("!!!!");
+				//alert("!!!!");
 				
 				//提交的参数，name和inch是和struts action中对应的接收变量
 				var params = {
@@ -432,6 +435,7 @@
 									
 									 F11:全屏 <input type="hidden" id="bt" name="bt">	
 									 
+									
 									<div id="editNow" style="float:right;">
 									</div>
 									
@@ -477,10 +481,12 @@
 										
 				<script type="text/javascript">
 					function xxx() {
+						//alert("!!!!!");
+						//alert($("#editNow").text());
 						
 						var params = {
 							code : CodeMirrorEditor.getValue(),
-							fileName : $('#editFile').text()
+							fileName : $('#editNow').text()
 						};
 						$.ajax({
 							type : "POST",
@@ -489,6 +495,7 @@
 							dataType : "text",
 							success : function(json) {
 								alert("save ok");
+								loadFile();
 							},
 							error : function() {
 								alert("save error");
